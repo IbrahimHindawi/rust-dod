@@ -1,0 +1,33 @@
+spawned 5 particles
+    row 0  0:1  position ( 0.00,  0.00)
+    row 1  1:1  position ( 1.00,  0.00)
+    row 2  2:1  position ( 2.00,  0.00)
+    row 3  3:1  position ( 3.00,  0.00)
+    row 4  4:1  position ( 4.00,  0.00)
+    slots:  0 -> row 0  1 -> row 1  2 -> row 2  3 -> row 3  4 -> row 4
+despawn 1:1, in row 1: the last row moves into the hole
+    row 0  0:1  position ( 0.00,  0.00)
+    row 1  4:1  position ( 4.00,  0.00)
+    row 2  2:1  position ( 2.00,  0.00)
+    row 3  3:1  position ( 3.00,  0.00)
+    slots:  0 -> row 0  1 free  2 -> row 2  3 -> row 3  4 -> row 1
+despawn 4:1, which the last despawn moved: its handle still finds it
+    row 0  0:1  position ( 0.00,  0.00)
+    row 1  3:1  position ( 3.00,  0.00)
+    row 2  2:1  position ( 2.00,  0.00)
+    slots:  0 -> row 0  1 free  2 -> row 2  3 -> row 1  4 free
+spawn 4:2: it reuses a number and takes the next row
+    row 0  0:1  position ( 0.00,  0.00)
+    row 1  3:1  position ( 3.00,  0.00)
+    row 2  2:1  position ( 2.00,  0.00)
+    row 3  4:2  position ( 9.00,  0.00)
+    slots:  0 -> row 0  1 free  2 -> row 2  3 -> row 1  4 -> row 3
+two steps of movement, a straight loop over 4 rows
+    row 0  0:1  position ( 0.00,  1.00)
+    row 1  3:1  position ( 3.00,  1.00)
+    row 2  2:1  position ( 2.00,  1.00)
+    row 3  4:2  position ( 9.00,  1.00)
+    slots:  0 -> row 0  1 free  2 -> row 2  3 -> row 1  4 -> row 3
+2:1 is at (2.00, 1.00), wherever its row is
+4:1 has a position: no, it is dead
+verify: 0 problems

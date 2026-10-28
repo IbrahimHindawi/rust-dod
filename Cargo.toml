@@ -1,0 +1,36 @@
+# How the programs are built.
+#
+# Every chapter and lesson is its own program: a single file that also builds
+# with plain `rustc`, named after its file. tools/check.py reads this same
+# [[bin]] list, builds each program, runs it and compares its output with the
+# .expected file beside it. There are no dependencies.
+[package]
+name = "rust-dod"
+version = "0.1.0"
+edition = "2024"
+publish = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
+
+# Release with symbols: for the debugger, and for reading the assembly.
+[profile.release]
+debug = true
+
+# Build an ECS: start here, README.md
+[[bin]]
+name = "ids"
+path = "ecs/src/1.entities/1.1.ids/ids.rs"
+
+[[bin]]
+name = "despawn"
+path = "ecs/src/1.entities/1.2.despawn/despawn.rs"
+
+[[bin]]
+name = "generations"
+path = "ecs/src/1.entities/1.3.generations/generations.rs"
+
+[[bin]]
+name = "entity_index"
+path = "ecs/src/1.entities/1.4.entity_index/entity_index.rs"

@@ -1,0 +1,14 @@
+the turret targets entity 1, a drone
+    entity 0  position ( 0.00,  0.00)  velocity -                health 500
+    entity 1  position (10.00,  0.00)  velocity (-1.00,  0.50)  health 100
+    entity 2  position ( 0.00, 10.00)  velocity ( 0.50, -1.00)  health 100
+entity 1 is destroyed and despawned
+    entity 0  position ( 0.00,  0.00)  velocity -                health 500
+    entity 1  (free)
+    entity 2  position ( 0.00, 10.00)  velocity ( 0.50, -1.00)  health 100
+the turret fires: the bullet is entity 1
+    entity 0  position ( 0.00,  0.00)  velocity -                health 500
+    entity 1  position ( 2.00,  2.00)  velocity ( 4.00,  4.00)  health -
+    entity 2  position ( 0.25,  9.50)  velocity ( 0.50, -1.00)  health 100
+the turret aims at entity 1, at (2.00, 2.00), moving (4.00, 4.00)
+    that is the turret's own bullet, not the drone: the number was reused

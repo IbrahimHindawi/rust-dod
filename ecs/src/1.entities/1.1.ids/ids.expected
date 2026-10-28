@@ -1,0 +1,13 @@
+spawned turret 0, drones 1 and 2, bullet 3
+    entity 0  position ( 0.00,  0.00)  velocity -                health 500
+    entity 1  position (10.00,  0.00)  velocity (-1.00,  0.50)  health 100
+    entity 2  position ( 0.00, 10.00)  velocity ( 0.50, -1.00)  health 100
+    entity 3  position ( 0.00,  0.00)  velocity ( 4.00,  4.00)  health -
+step 1: the movement system looked at 4 entities and moved 3
+step 2: the movement system looked at 4 entities and moved 3
+    entity 0  position ( 0.00,  0.00)  velocity -                health 500
+    entity 1  position ( 9.00,  0.50)  velocity (-1.00,  0.50)  health 100
+    entity 2  position ( 0.50,  9.00)  velocity ( 0.50, -1.00)  health 100
+    entity 3  position ( 4.00,  4.00)  velocity ( 4.00,  4.00)  health -
+every component array has room for 8; 4 entities exist
+    positions hold 4 values, velocities 3, healths 3
