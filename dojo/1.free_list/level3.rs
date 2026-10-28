@@ -4,7 +4,8 @@
 //
 // The harness needs exactly this, and checks what each does:
 //
-//   use crate::{Dead, Handle};       Handle { index: u32, generation: NonZeroU32 }
+//   Given, imported below from dojo.rs: Dead, and
+//   Handle { index: u32, generation: NonZeroU32 }
 //
 //   pub struct Handles
 //   Handles::new() -> Handles
@@ -13,3 +14,19 @@
 //   alive(&self, h: Handle) -> bool
 //   live(&self) -> usize                         handles alive now
 //   slots(&self) -> usize                        indices handed out, alive or free
+
+// `unsafe` is an error, except where an item allows it by name.
+#![deny(unsafe_code)]
+
+#[path = "../dojo.rs"]
+mod dojo;
+// The harness: main hands it the program, and it checks the code below.
+mod harness;
+
+use dojo::{Dead, Handle};
+
+// Your code here.
+
+fn main() {
+    harness::run();
+}

@@ -294,7 +294,7 @@ for block in sorted((REPO / "dojo").glob("[0-9].*")):
     title = title[0].upper() + title[1:]
     guide = re.sub(r"^`dojo/[^`]+`\n\n", "", readme, count=1, flags=re.M)
     note = (f'<p class="note">The playground. The kata\'s harness is <code>dojo/{block.name}/harness.rs</code>, '
-            f'and where each level starts is <code>dojo/{block.name}/levels/</code>.</p>')
+            f'and the levels start from <code>dojo/{block.name}/level1.rs</code> to <code>level3.rs</code>.</p>')
     nav_dojo.append((tok, num, title, dojo_about.get(num, "")))
     views.append(program_view(tok, f"The dojo · block {num}", title, f"dojo/{block.name}/play_{name}", guide, "playground", note))
 

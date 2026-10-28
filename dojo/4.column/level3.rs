@@ -4,7 +4,8 @@
 //
 // The harness needs exactly this, and checks what each does:
 //
-//   use crate::Pod;                   unsafe trait Pod: Copy + 'static, plain data
+//   Given, imported below from the harness:
+//   unsafe trait Pod: Copy + 'static, plain data
 //
 //   pub struct Column
 //   Column::new(size: usize, align: usize) -> Column
@@ -21,3 +22,19 @@
 //
 // Rows of zero bytes, tags, are in the scenario too. The harness denies unsafe
 // code except in functions marked #[allow(unsafe_code)].
+
+// `unsafe` is an error, except where an item allows it by name.
+#![deny(unsafe_code)]
+
+#[path = "../dojo.rs"]
+mod dojo;
+// The harness: main hands it the program, and it checks the code below.
+mod harness;
+
+use harness::Pod;
+
+// Your code here.
+
+fn main() {
+    harness::run();
+}

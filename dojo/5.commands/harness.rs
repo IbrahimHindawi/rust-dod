@@ -1,5 +1,8 @@
-// The harness for dojo 5, a command buffer. It is fixed: your work is
-// kata.rs, beside it. Run both with
+// The harness for dojo 5, a command buffer. It is fixed. Your work is kata.rs,
+// beside it: kata.rs brings this file in as a module and its main calls run(),
+// so the two are one program. The reference, solution.rs, and each level file
+// do the same, so each of them builds on its own, and this file never does.
+// Build and run yours with
 //
 //   python tools/dojo.py commands
 //
@@ -15,13 +18,8 @@
 // `unsafe` is an error, except where an item allows it by name.
 #![deny(unsafe_code)]
 
-#[path = "../dojo.rs"]
-mod dojo;
-mod kata;
-
-use dojo::{Rng, Run};
-pub use dojo::{Dead, Handle};
-use kata::{Commands, Pending};
+use crate::dojo::{Dead, Handle, Rng, Run};
+use crate::{Commands, Pending};
 use std::fmt;
 use std::num::NonZeroU32;
 
@@ -257,7 +255,8 @@ fn fuzz(run: &Run) {
     run.pass();
 }
 
-fn main() {
+// The kata's main calls this.
+pub fn run() {
     let run = Run::new("commands", "5. a command buffer");
     scenario(&run);
     fuzz(&run);

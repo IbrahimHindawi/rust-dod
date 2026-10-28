@@ -3,10 +3,12 @@
 // how a failure is reported. It also holds the two types the katas take as
 // given: a Handle, and Dead.
 //
-// A harness brings it in the way lessons 4 to 6 bring in kayan:
+// Every kata file brings it in, along with the harness, the way lessons 4 to
+// 6 bring in kayan:
 //
 //   #[path = "../dojo.rs"]
 //   mod dojo;
+//   mod harness;
 
 // Not every harness uses every part.
 #![allow(dead_code)]

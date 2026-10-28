@@ -1,5 +1,8 @@
-// The harness for dojo 3, the slot map. It is fixed: your work is kata.rs,
-// beside it. Run both with
+// The harness for dojo 3, the slot map. It is fixed. Your work is kata.rs,
+// beside it: kata.rs brings this file in as a module and its main calls run(),
+// so the two are one program. The reference, solution.rs, and each level file
+// do the same, so each of them builds on its own, and this file never does.
+// Build and run yours with
 //
 //   python tools/dojo.py slot_map
 //
@@ -13,13 +16,8 @@
 // `unsafe` is an error, except where an item allows it by name.
 #![deny(unsafe_code)]
 
-#[path = "../dojo.rs"]
-mod dojo;
-mod kata;
-
-use dojo::{Rng, Run};
-pub use dojo::Handle;
-use kata::SlotMap;
+use crate::dojo::{Handle, Rng, Run};
+use crate::SlotMap;
 use std::collections::{HashMap, HashSet};
 
 fn list<T: ToString>(items: &[T]) -> String {
@@ -159,7 +157,8 @@ fn fuzz(run: &Run) {
     run.pass();
 }
 
-fn main() {
+// The kata's main calls this.
+pub fn run() {
     let run = Run::new("slot_map", "3. the slot map");
     scenario(&run);
     fuzz(&run);

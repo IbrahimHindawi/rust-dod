@@ -74,7 +74,7 @@ def in_order(sample: list[str], expected: list[str]) -> bool:
 # sample from the playground's or the harness's expected output.
 def dojo_sources(block: Path) -> tuple[list[str], list[str], list[Path]]:
     files = sorted(block.rglob("*.rs")) + [block.parent / "dojo.rs"]
-    texts = [f.read_text(encoding="utf-8") for f in files if f.name != "kata.rs" or f.parent.name == "solution"]
+    texts = [f.read_text(encoding="utf-8") for f in files if f.name != "kata.rs"]
     outputs = sorted(block.glob("*.expected"))
     expected = [line for o in outputs if o.exists() for line in o.read_text(encoding="utf-8").split("\n")]
     return texts, expected, outputs

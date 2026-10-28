@@ -3,6 +3,14 @@
 //
 // Start it with: python tools/dojo.py start swap_remove 2
 
+// `unsafe` is an error, except where an item allows it by name.
+#![deny(unsafe_code)]
+
+#[path = "../dojo.rs"]
+mod dojo;
+// The harness: main hands it the program, and it checks the code below.
+mod harness;
+
 pub struct SparseSet<T> {
     // Packed: values[row] belongs to ids[row]. No holes, in no order.
     values: Vec<T>,
@@ -48,4 +56,8 @@ impl<T> SparseSet<T> {
     pub fn ids(&self) -> &[u32] {
         todo!("the owner of each row")
     }
+}
+
+fn main() {
+    harness::run();
 }

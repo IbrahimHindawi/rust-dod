@@ -3,7 +3,16 @@
 //
 // Start it with: python tools/dojo.py start free_list 2
 
-use crate::{Dead, Handle};
+// `unsafe` is an error, except where an item allows it by name.
+#![deny(unsafe_code)]
+
+#[path = "../dojo.rs"]
+mod dojo;
+// The harness: main hands it the program, and it checks the code below.
+mod harness;
+
+use dojo::{Dead, Handle};
+
 use std::num::NonZeroU32;
 
 pub struct Handles {
@@ -43,4 +52,8 @@ impl Handles {
     pub fn slots(&self) -> usize {
         todo!("indices so far")
     }
+}
+
+fn main() {
+    harness::run();
 }

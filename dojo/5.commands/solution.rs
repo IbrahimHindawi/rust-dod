@@ -1,10 +1,15 @@
-// Level 1: one function. Everything here works except apply(). Write its body:
-// run every command in the order it was recorded, count what happened, and
-// leave the buffer empty for the next frame.
-//
-// Start it with: python tools/dojo.py start commands 1
+// The reference: structural changes recorded now, applied later, in order.
 
-use crate::{Applied, Dead, Handle, World};
+// `unsafe` is an error, except where an item allows it by name.
+#![deny(unsafe_code)]
+
+#[path = "../dojo.rs"]
+mod dojo;
+// The harness: main hands it the program, and it checks the code below.
+mod harness;
+
+use dojo::{Dead, Handle};
+use harness::{Applied, World};
 
 // A spawn that has been recorded and not applied. It has no handle yet, so it
 // is named by its place among this buffer's spawns: 0 for the first.
@@ -74,7 +79,25 @@ impl Commands {
     // set or despawn whose target is dead by then, perhaps despawned earlier in
     // this same buffer, changes nothing and is counted as skipped.
     pub fn apply(&mut self, w: &mut World) -> Applied {
-        todo!("level 1: every command, in order; then an empty buffer")
+        let mut done = Applied { applied: 0, skipped: 0 };
+        for &command in &self.list {
+            let result = match command {
+                Command::Spawn(value) => {
+                    self.spawned.push(w.spawn(value));
+                    Ok(())
+                }
+                Command::Set(target, value) => w.set(resolve(&self.spawned, target), value),
+                Command::Despawn(target) => w.despawn(resolve(&self.spawned, target)),
+            };
+            match result {
+                Ok(()) => done.applied += 1,
+                Err(Dead) => done.skipped += 1,
+            }
+        }
+        self.list.clear();
+        self.spawned.clear();
+        self.spawns = 0;
+        done
     }
 }
 
@@ -85,4 +108,8 @@ fn resolve(spawned: &[Handle], target: Target) -> Handle {
         Target::Entity(h) => h,
         Target::Pending(Pending(i)) => spawned[i],
     }
+}
+
+fn main() {
+    harness::run();
 }

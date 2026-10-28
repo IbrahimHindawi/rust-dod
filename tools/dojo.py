@@ -17,7 +17,9 @@ and the block is due again after 1, 3, 7, 14, then 30 days, counting its
 passes. Spaced reps are what make a block stick, more than many in one day.
 
 Your kata.rs files are yours: git ignores them, and `start` will not
-overwrite one you have changed unless you add --force.
+overwrite one you have changed unless you add --force. A kata is a whole
+program: it brings in the harness as a module and its main runs it, so the
+runner builds kata.rs, and the harness comes with it.
 """
 
 from __future__ import annotations
@@ -148,12 +150,12 @@ def status() -> int:
 
 def start(word: str, level: str, force: bool) -> int:
     b = find(word)
-    source = b / "levels" / f"{level}.rs"
+    source = b / f"level{level}.rs"
     if not source.exists():
         sys.exit(f"dojo: {name_of(b)} has no level {level}; the levels are "
-                 + ", ".join(p.stem for p in sorted((b / "levels").glob("*.rs"))))
+                 + ", ".join(p.stem[len("level"):] for p in sorted(b.glob("level*.rs"))))
     kata = b / "kata.rs"
-    untouched = [p.read_text(encoding="utf-8") for p in (b / "levels").glob("*.rs")]
+    untouched = [p.read_text(encoding="utf-8") for p in b.glob("level*.rs")]
     if kata.exists() and kata.read_text(encoding="utf-8") not in untouched and not force:
         sys.exit(f"dojo: {kata.relative_to(ROOT)} has your work in it; add --force to replace it")
     shutil.copyfile(source, kata)
@@ -177,7 +179,7 @@ def check(word: str, args: list[str]) -> int:
         code, out = miri(b, passthrough)
     else:
         exe = OUT / name_of(b) / ("harness.exe" if os.name == "nt" else "harness")
-        build(b / "harness.rs", exe, release)
+        build(b / "kata.rs", exe, release)
         code, out = stream([str(exe), *passthrough])
     if code != 0 or "PASS" not in out.splitlines():
         return 1
@@ -197,14 +199,14 @@ def check(word: str, args: list[str]) -> int:
     return 0
 
 
-# Miri runs through cargo, so the harness gets a small package of its own,
+# Miri runs through cargo, so the kata gets a small package of its own,
 # pointing at the files where they are.
 def miri(b: Path, args: list[str]) -> tuple[int, str]:
     pkg = OUT / name_of(b) / "miri"
     pkg.mkdir(parents=True, exist_ok=True)
     (pkg / "Cargo.toml").write_text(
         f'[package]\nname = "dojo-{name_of(b).replace("_", "-")}"\nversion = "0.1.0"\nedition = "2024"\n'
-        f'autobins = false\n\n[[bin]]\nname = "harness"\npath = "{(b / "harness.rs").as_posix()}"\n',
+        f'autobins = false\n\n[[bin]]\nname = "harness"\npath = "{(b / "kata.rs").as_posix()}"\n',
         encoding="utf-8")
     if "--ops" not in args:
         args = args + ["--ops", "500"]

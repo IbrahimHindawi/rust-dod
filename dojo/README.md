@@ -34,8 +34,8 @@ or after it.
       README.md              the block, its invariant, the levels, the variations
       play_slot_map.rs       the playground
       harness.rs             fixed: a scenario, then a fuzz run against a model
-      levels/1.rs ... 3.rs   where a kata starts
-      solution/kata.rs       the reference, out of the way
+      level1.rs ... 3.rs     where a kata starts
+      solution.rs            the reference; don't peek
       kata.rs                yours: made by `start`, ignored by git
 
 The harness doesn't know how your kata works, only what it must do. First it
@@ -87,20 +87,34 @@ it optimised, for big `--ops`. Block 4's kata needs `unsafe`, and
 
 ## How it's built
 
-A harness is an ordinary program, and your kata is one of its modules:
+Every kata file is a whole program. Yours, the solution and each level start
+much the same way (block 2 imports nothing from dojo.rs):
 
     #[path = "../dojo.rs"]
     mod dojo;
-    mod kata;
+    mod harness;
 
-`mod kata;` is `kata.rs` beside the harness, so the kata uses what the harness
-provides as `crate::Handle`, `crate::Dead` or `crate::Pod`. `dojo/dojo.rs`
-holds what every harness shares: those types, the run's settings, the random
-number generator, and the reporting. The runner builds with `rustc` directly,
-with the warnings for unused code off, since a kata in progress is full of it.
+    use dojo::{Dead, Handle};
 
-`python tools/check.py dojo` keeps the dojo honest: every reference solution
-must pass its harness and print its `harness.expected`, level 1 must fail
+and end with a `main` that hands over to the harness:
+
+    fn main() {
+        harness::run();
+    }
+
+So any of them builds on its own, `rustc --edition 2024 dojo/3.slot_map/solution.rs`
+for instance, and everything it uses is declared or imported in the file.
+`mod harness;` is `harness.rs` beside it, and the harness reaches your code
+through `crate::`, so all it needs is the names its README lists.
+`dojo/dojo.rs` holds what every harness shares: `Handle` and `Dead`, the
+run's settings, the random number generator, and the reporting. Block 4's
+`Pod` and block 5's `World` are the harness's own, imported as
+`harness::Pod` and `harness::World`. The runner builds `kata.rs` with
+`rustc` directly, with the warnings for unused code off, since a kata in
+progress is full of it.
+
+`python tools/check.py dojo` keeps the dojo honest: every solution must build
+on its own, pass its harness and print its `harness.expected`, level 1 must fail
 (its gap must be a gap), level 2 must compile, and the playgrounds must print
 their `.expected`. The harnesses were also checked against broken solutions,
 the mistakes each block is about, and catch each one.

@@ -1,8 +1,15 @@
-// Level 1: one function. Everything here works except free(). Write its body.
-//
-// Start it with: python tools/dojo.py start free_list 1
+// The reference: a free list, and a generation per index.
 
-use crate::{Dead, Handle};
+// `unsafe` is an error, except where an item allows it by name.
+#![deny(unsafe_code)]
+
+#[path = "../dojo.rs"]
+mod dojo;
+// The harness: main hands it the program, and it checks the code below.
+mod harness;
+
+use dojo::{Dead, Handle};
+
 use std::num::NonZeroU32;
 
 pub struct Handles {
@@ -34,7 +41,13 @@ impl Handles {
     // The generation goes up now, not at the next alloc, so a free index
     // already holds a generation that no handle has.
     pub fn free(&mut self, h: Handle) -> Result<(), Dead> {
-        todo!("level 1: free h, so no handle to it is alive again")
+        if !self.alive(h) {
+            return Err(Dead);
+        }
+        let generation = &mut self.generations[h.index as usize];
+        *generation = generation.checked_add(1).expect("an index has lived 4 billion lives");
+        self.free.push(h.index);
+        Ok(())
     }
 
     pub fn alive(&self, h: Handle) -> bool {
@@ -48,4 +61,8 @@ impl Handles {
     pub fn slots(&self) -> usize {
         self.generations.len()
     }
+}
+
+fn main() {
+    harness::run();
 }

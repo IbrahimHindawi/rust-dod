@@ -1,5 +1,8 @@
-// The harness for dojo 1, the free list and generations. It is fixed: your
-// work is kata.rs, beside it. Run both with
+// The harness for dojo 1, the free list and generations. It is fixed. Your
+// work is kata.rs, beside it: kata.rs brings this file in as a module and its
+// main calls run(), so the two are one program. The reference, solution.rs,
+// and each level file do the same, so each of them builds on its own, and this
+// file never does. Build and run yours with
 //
 //   python tools/dojo.py free_list
 //
@@ -12,13 +15,8 @@
 // `unsafe` is an error, except where an item allows it by name.
 #![deny(unsafe_code)]
 
-#[path = "../dojo.rs"]
-mod dojo;
-mod kata;
-
-use dojo::{Rng, Run};
-pub use dojo::{Dead, Handle};
-use kata::Handles;
+use crate::dojo::{Dead, Handle, Rng, Run};
+use crate::Handles;
 use std::collections::HashSet;
 
 fn status(r: Result<(), Dead>) -> &'static str {
@@ -107,7 +105,8 @@ fn fuzz(run: &Run) {
     run.pass();
 }
 
-fn main() {
+// The kata's main calls this.
+pub fn run() {
     let run = Run::new("free_list", "1. free list and generations");
     scenario(&run);
     fuzz(&run);

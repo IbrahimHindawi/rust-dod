@@ -1,7 +1,15 @@
 // The reference: one component's rows, kept as bytes, viewed as any plain-data
 // type with the same size and alignment.
 
-use crate::Pod;
+// `unsafe` is an error, except where an item allows it by name.
+#![deny(unsafe_code)]
+
+#[path = "../dojo.rs"]
+mod dojo;
+// The harness: main hands it the program, and it checks the code below.
+mod harness;
+
+use harness::Pod;
 
 // The storage is 16-byte blocks, so it starts on a 16-byte boundary and any
 // row type with an alignment up to 16 lands where it may live.
@@ -106,4 +114,8 @@ impl Column {
             self.size, self.align, size_of::<T>(), align_of::<T>()
         );
     }
+}
+
+fn main() {
+    harness::run();
 }

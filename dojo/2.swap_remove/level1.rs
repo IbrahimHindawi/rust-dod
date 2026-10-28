@@ -1,5 +1,14 @@
-// The reference: a sparse set. Values packed in rows, a row per id, and the
-// back-reference that keeps the two in step when swap-remove moves a row.
+// Level 1: one function. Everything here works except remove(). Write its body.
+//
+// Start it with: python tools/dojo.py start swap_remove 1
+
+// `unsafe` is an error, except where an item allows it by name.
+#![deny(unsafe_code)]
+
+#[path = "../dojo.rs"]
+mod dojo;
+// The harness: main hands it the program, and it checks the code below.
+mod harness;
 
 pub struct SparseSet<T> {
     // Packed: values[row] belongs to ids[row]. No holes, in no order.
@@ -33,13 +42,7 @@ impl<T> SparseSet<T> {
     // Swap-remove: the last row moves into the hole, and the id that owned the
     // last row is told where its value went.
     pub fn remove(&mut self, id: u32) -> Option<T> {
-        let row = self.rows.get_mut(id as usize)?.take()? as usize;
-        let value = self.values.swap_remove(row);
-        self.ids.swap_remove(row);
-        if let Some(&moved) = self.ids.get(row) {
-            self.rows[moved as usize] = Some(row as u32);
-        }
-        Some(value)
+        todo!("level 1: take id's value out, keeping the rows packed and every id's row right")
     }
 
     pub fn get(&self, id: u32) -> Option<&T> {
@@ -65,4 +68,8 @@ impl<T> SparseSet<T> {
     pub fn ids(&self) -> &[u32] {
         &self.ids
     }
+}
+
+fn main() {
+    harness::run();
 }

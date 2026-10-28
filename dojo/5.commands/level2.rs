@@ -3,7 +3,16 @@
 //
 // Start it with: python tools/dojo.py start commands 2
 
-use crate::{Applied, Dead, Handle, World};
+// `unsafe` is an error, except where an item allows it by name.
+#![deny(unsafe_code)]
+
+#[path = "../dojo.rs"]
+mod dojo;
+// The harness: main hands it the program, and it checks the code below.
+mod harness;
+
+use dojo::{Dead, Handle};
+use harness::{Applied, World};
 
 // A spawn that has been recorded and not applied: its place among this
 // buffer's spawns, 0 for the first.
@@ -76,4 +85,8 @@ impl Commands {
 // The handle a target names: its own, or the one its spawn made.
 fn resolve(spawned: &[Handle], target: Target) -> Handle {
     todo!("a target's handle")
+}
+
+fn main() {
+    harness::run();
 }

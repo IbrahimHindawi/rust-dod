@@ -2,7 +2,16 @@
 //
 // Start it with: python tools/dojo.py start slot_map 1
 
-use crate::Handle;
+// `unsafe` is an error, except where an item allows it by name.
+#![deny(unsafe_code)]
+
+#[path = "../dojo.rs"]
+mod dojo;
+// The harness: main hands it the program, and it checks the code below.
+mod harness;
+
+use dojo::Handle;
+
 use std::num::NonZeroU32;
 
 // One slot per index: the life it is in now (or next, if it is free), and the
@@ -79,4 +88,8 @@ impl<T> SlotMap<T> {
     pub fn handles(&self) -> &[Handle] {
         &self.handles
     }
+}
+
+fn main() {
+    harness::run();
 }

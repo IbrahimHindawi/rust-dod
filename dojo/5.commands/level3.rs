@@ -4,7 +4,7 @@
 //
 // The harness needs exactly this, and checks what each does:
 //
-//   use crate::{Applied, Dead, Handle, World};
+//   Given, imported below: Dead and Handle from dojo.rs, and from the harness
 //       World: spawn(value) -> Handle, despawn(h) -> Result<(), Dead>,
 //              set(h, value) -> Result<(), Dead>, get(h) -> Option<u32>
 //       Applied { applied: u32, skipped: u32 }
@@ -21,3 +21,20 @@
 //   apply(&mut self, w: &mut World) -> Applied         every command in order; a
 //                                                      dead target is skipped;
 //                                                      the buffer ends up empty
+
+// `unsafe` is an error, except where an item allows it by name.
+#![deny(unsafe_code)]
+
+#[path = "../dojo.rs"]
+mod dojo;
+// The harness: main hands it the program, and it checks the code below.
+mod harness;
+
+use dojo::{Dead, Handle};
+use harness::{Applied, World};
+
+// Your code here.
+
+fn main() {
+    harness::run();
+}

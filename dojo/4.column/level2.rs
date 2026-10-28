@@ -3,7 +3,15 @@
 //
 // Start it with: python tools/dojo.py start column 2
 
-use crate::Pod;
+// `unsafe` is an error, except where an item allows it by name.
+#![deny(unsafe_code)]
+
+#[path = "../dojo.rs"]
+mod dojo;
+// The harness: main hands it the program, and it checks the code below.
+mod harness;
+
+use harness::Pod;
 
 // The storage is 16-byte blocks, so it starts on a 16-byte boundary.
 #[derive(Clone, Copy, Default)]
@@ -77,4 +85,8 @@ impl Column {
     pub fn slice_mut<T: Pod>(&mut self) -> &mut [T] {
         todo!("the rows as a &mut [T]")
     }
+}
+
+fn main() {
+    harness::run();
 }

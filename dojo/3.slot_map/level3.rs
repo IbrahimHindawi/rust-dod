@@ -4,7 +4,8 @@
 //
 // The harness needs exactly this, and checks what each does:
 //
-//   use crate::Handle;               Handle { index: u32, generation: NonZeroU32 }
+//   Given, imported below from dojo.rs:
+//   Handle { index: u32, generation: NonZeroU32 }
 //
 //   pub struct SlotMap<T>
 //   SlotMap::new() -> SlotMap<T>
@@ -16,3 +17,19 @@
 //   len(&self) -> usize
 //   values(&self) -> &[T]                          packed, in row order
 //   handles(&self) -> &[Handle]                    handles()[row] owns values()[row]
+
+// `unsafe` is an error, except where an item allows it by name.
+#![deny(unsafe_code)]
+
+#[path = "../dojo.rs"]
+mod dojo;
+// The harness: main hands it the program, and it checks the code below.
+mod harness;
+
+use dojo::Handle;
+
+// Your code here.
+
+fn main() {
+    harness::run();
+}
