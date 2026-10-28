@@ -62,3 +62,20 @@ path = "ecs/src/2.components/2.6.add_remove/add_remove.rs"
 [[bin]]
 name = "inspecting"
 path = "ecs/src/2.components/2.7.inspecting/inspecting.rs"
+
+# Part 3
+[[bin]]
+name = "queries"
+path = "ecs/src/3.systems/3.1.queries/queries.rs"
+
+[[bin]]
+name = "systems"
+path = "ecs/src/3.systems/3.2.systems/systems.rs"
+
+[[bin]]
+name = "commands"
+path = "ecs/src/3.systems/3.3.commands/commands.rs"
+
+[[bin]]
+name = "game"
+path = "ecs/src/3.systems/3.4.game/game.rs"

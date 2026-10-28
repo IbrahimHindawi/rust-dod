@@ -1,0 +1,34 @@
+1. an expire loop that despawns as it goes
+    lifetimes:  0:1 0.00  1:1 1.00  2:1 0.00  3:1 0.00
+after one pass:
+    lifetimes:  3:1 0.00  1:1 1.00
+verify: 0 problems. The world is fine; the loop missed one.
+
+2. an expire system that records despawns
+    lifetimes:  0:1 0.00  1:1 1.00  2:1 0.00  3:1 0.00
+    despawn 0:1
+    despawn 2:1
+    despawn 3:1
+after one frame:
+    lifetimes:  1:1 1.00
+
+3. a turret, two targets in its line of fire, one out of it
+frame 1
+    spawn {Position Velocity Damage Lifetime} -> 4:1
+frame 2
+frame 3
+    spawn {Position Velocity Damage Lifetime} -> 5:1
+frame 4
+    despawn 4:1
+    despawn 4:1: skipped, dead
+frame 5
+    spawn {Position Velocity Damage Lifetime} -> 4:2
+frame 6
+    despawn 5:1
+    despawn 5:1: skipped, dead
+health: 1:1 50, 2:1 50, 3:1 100
+commands applied: 17, skipped: 2
+    table 0 {Position Turret}: 0:1
+    table 1 {Position Health}: 1:1 2:1 3:1
+    table 2 {Position Velocity Damage Lifetime}: 4:2
+verify: 0 problems

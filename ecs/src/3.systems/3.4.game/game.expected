@@ -1,0 +1,90 @@
+  0.00s  wave 1: 3:1, 2 units a second
+  2.00s  wave 2: 7:1 8:1, 2 units a second
+  4.00s  12 entities in 4 tables
+         2 T......-...........-........d....
+         1 T..........-...........-*........
+         0 T......-...........-........d....
+  4.00s  wave 3: 9:2 10:2 14:1, 2 units a second
+  4.00s  3:1 destroyed
+  5.75s  8:1 destroyed
+  5.75s  7:1 destroyed
+  6.00s  wave 4: 7:2 8:2 3:3, 2 units a second
+  7.12s  10:2 destroyed
+  8.00s  15 entities in 4 tables
+         2 T..........-...........-d........
+         1 T..-...........-...........-d.d.d
+         0 T..........-...........-d........
+  8.00s  wave 5: 13:3 16:2 17:1, 4 units a second
+  8.62s  14:1 destroyed
+  8.62s  9:2 destroyed
+ 10.00s  wave 6: 18:2 19:2 6:5 11:4, 4 units a second
+ 10.00s  7:2 destroyed
+ 11.38s  17:1 destroyed
+ 11.38s  13:3 destroyed
+ 11.81s  16:2 destroyed
+ 12.00s  14 entities in 4 tables
+         2 T..-...........-........d.d......
+         1 T......-..............d.d........
+         0 T..-...........-........d.d......
+ 12.00s  wave 7: 16:3 5:7 14:4 15:4 7:3 4:6, 2 units a second
+ 14.00s  wave 8: 12:7 20:2 21:1 22:1 23:1 24:1, 4 units a second
+ 14.19s  6:5 destroyed
+ 14.19s  18:2 destroyed
+ 14.75s  8:2 destroyed
+ 16.00s  21 entities in 4 tables
+         2 T......-..d.............d.d......
+         1 T..........-....d.......d.d......
+         0 T......-..d.............d.d......
+ 16.69s  11:4 destroyed
+ 16.69s  19:2 destroyed
+ 17.56s  3:3 destroyed
+ 19.81s  23:1 destroyed
+ 19.81s  12:7 destroyed
+ 20.00s  14 entities in 4 tables
+         2 T.........d.....d.d..............
+         1 T..-....*.d.....d.d..............
+         0 T.........d.....d.d..............
+ 20.19s  21:1 destroyed
+ 22.31s  20:2 destroyed
+ 22.31s  24:1 destroyed
+ 22.44s  22:1 reached the base in lane 1
+ 24.00s  12 entities in 4 tables
+         2 T..-....d.d......................
+         1 T......-d.d......................
+         0 T..-....d.d......................
+ 25.31s  14:4 destroyed
+ 25.56s  16:3 destroyed
+ 25.56s  7:3 destroyed
+ 28.00s  6 entities in 4 tables
+         2 T.*..............................
+         1 T.*..............................
+         0 T.*..............................
+ 28.12s  15:4 destroyed
+ 28.31s  4:6 destroyed
+ 28.31s  5:7 destroyed
+ 32.00s  3 entities in 4 tables
+         2 T................................
+         1 T................................
+         0 T................................
+
+32.00 seconds, 512 frames; verify after every one: 0 problems
+drones: 28 came, 27 destroyed, 1 reached the base, 0 still flying
+bullets: 110 fired, 111 hits; fires started: 28
+entities: at most 27 alive at once; commands: 716 applied, 1 skipped
+
+the schedule, and what each system ran over:
+    turret called  512 times, over  1536 rows
+    age    called  409 times, over  1622 rows
+    expire called  409 times, over  1622 rows
+    move   called 1018 times, over  5051 rows
+    hit    called  409 times, over  1622 rows
+    ignite called  443 times, over  3145 rows
+    burn   called  166 times, over   284 rows
+    die    called  609 times, over  3429 rows
+    breach called  609 times, over  3429 rows
+
+the tables at the end:
+    table 0 {Position Turret}: 0:1 1:1 2:1
+    table 1 {Position Velocity Health}:
+    table 2 {Position Velocity Damage Lifetime}:
+    table 3 {Position Velocity Health Burning}:
