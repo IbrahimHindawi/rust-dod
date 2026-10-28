@@ -107,4 +107,5 @@ the mistakes each block is about, and catch each one.
 
 The same dojo exists in rin, in [rin-dod](https://github.com/IbrahimHindawi/rin-dod).
 The random number generator is the same, so a seed is the same run in both,
-and the playgrounds print the same thing.
+and the playgrounds print the same thing, except where block 4's column gets
+its memory: an arena in rin, a Vec in Rust.

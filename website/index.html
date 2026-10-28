@@ -2679,7 +2679,7 @@ mod dojo;
 mod kata;</code></pre>
 <p><code>mod kata;</code> is <code>kata.rs</code> beside the harness, so the kata uses what the harness provides as <code>crate::Handle</code>, <code>crate::Dead</code> or <code>crate::Pod</code>. <code>dojo/dojo.rs</code> holds what every harness shares: those types, the run's settings, the random number generator, and the reporting. The runner builds with <code>rustc</code> directly, with the warnings for unused code off, since a kata in progress is full of it.</p>
 <p><code>python tools/check.py dojo</code> keeps the dojo honest: every reference solution must pass its harness and print its <code>harness.expected</code>, level 1 must fail (its gap must be a gap), level 2 must compile, and the playgrounds must print their <code>.expected</code>. The harnesses were also checked against broken solutions, the mistakes each block is about, and catch each one.</p>
-<p>The same dojo exists in rin, in <a href="https://github.com/IbrahimHindawi/rin-dod" target="_blank" rel="noopener">rin-dod</a>. The random number generator is the same, so a seed is the same run in both, and the playgrounds print the same thing.</p></div>
+<p>The same dojo exists in rin, in <a href="https://github.com/IbrahimHindawi/rin-dod" target="_blank" rel="noopener">rin-dod</a>. The random number generator is the same, so a seed is the same run in both, and the playgrounds print the same thing, except where block 4's column gets its memory: an arena in rin, a Vec in Rust.</p></div>
 </section>
 <section class="view" id="v-dojo-free-list" data-view="dojo-free-list" hidden>
 <header class="vhead"><p class="eyebrow">The dojo · block 1</p><h1>Free list and generations</h1><p class="path">dojo/1.free_list/play_free_list.rs</p></header>
