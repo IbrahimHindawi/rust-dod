@@ -1,0 +1,17 @@
+dojo: 2. swap-remove and the back-reference
+scenario
+    insert 3, 7, 1, 5: ids by row: 3 7 1 5
+    values by row: 30 70 10 50
+    remove 7: 70
+    the last row moved into row 1: ids: 3 5 1
+    values: 30 50 10
+    get 5, through its fixed row: 50
+    get 7: None
+    remove 7 again: None
+    insert 3 again: the old value comes back: 30
+    insert 7: a new row at the end: None
+    ids: 3 5 1 7
+    get_mut 1, add 1: 11
+    len: 4
+fuzz: 20000 operations from seed 1, checked after each
+PASS

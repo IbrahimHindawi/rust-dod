@@ -1,0 +1,27 @@
+a column of Vec2: 8-byte rows aligned to 4, kept in 16-byte blocks
+push 3 zeroed rows, and write each through the typed view
+    capacity 4, 3 rows in use, 2 blocks of storage
+    row 0  00 00 80 3f 00 00 00 40   as a Vec2 (1, 2)
+    row 1  00 00 40 40 00 00 80 40   as a Vec2 (3, 4)
+    row 2  00 00 a0 40 00 00 c0 40   as a Vec2 (5, 6)
+push 2 more: the column is full at 4 rows, so it grows before the fifth
+    grew to 8 rows: a new allocation, 4 rows copied into it, the old one freed
+    a reference into the old one would point at freed memory: Rust won't let you keep one
+    capacity 8, 5 rows in use, 4 blocks of storage
+    row 0  00 00 80 3f 00 00 00 40   as a Vec2 (1, 2)
+    row 1  00 00 40 40 00 00 80 40   as a Vec2 (3, 4)
+    row 2  00 00 a0 40 00 00 c0 40   as a Vec2 (5, 6)
+    row 3  00 00 e0 40 00 00 00 41   as a Vec2 (7, 8)
+    row 4  00 00 10 41 00 00 20 41   as a Vec2 (9, 10)
+swap_remove row 0: the last row's 8 bytes move into row 0
+    capacity 8, 4 rows in use, 4 blocks of storage
+    row 0  00 00 10 41 00 00 20 41   as a Vec2 (9, 10)
+    row 1  00 00 40 40 00 00 80 40   as a Vec2 (3, 4)
+    row 2  00 00 a0 40 00 00 c0 40   as a Vec2 (5, 6)
+    row 3  00 00 e0 40 00 00 00 41   as a Vec2 (7, 8)
+ask for the rows as other types
+    as u32: refused, a u32 is 4 bytes and these rows are 8
+    as [u8; 8]: refused, the size is right, but it is aligned to 1, not 4
+1000 pushes into a u32 column, growing by doubling
+    9 grows, 1020 rows copied to make room
+    and the rows are all there: they add up to 499500

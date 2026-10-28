@@ -1,0 +1,34 @@
+a world of 5 things, packed in rows; a life of 0 means its time is up
+    row 0  0:1  life 0
+    row 1  1:1  life 3
+    row 2  2:1  life 0
+    row 3  3:1  life 0
+    row 4  4:1  life 2
+the expire system walks the rows, and records a despawn for each life of 0
+    record: despawn 0:1
+    record: despawn 2:1
+    record: despawn 3:1
+the spawner makes a replacement, and gives it a life through its pending number
+    record: spawn with life 1
+    record: set pending 0 life 5
+a second system despawns 2:1 too: it doesn't know the first one did
+    record: despawn 2:1
+the buffer holds 6 commands, and the world has not changed:
+    row 0  0:1  life 0
+    row 1  1:1  life 3
+    row 2  2:1  life 0
+    row 3  3:1  life 0
+    row 4  4:1  life 2
+apply the buffer, in the order it was recorded
+    despawn 0:1: ok, 4:1 moves into 0:1's row
+    despawn 2:1: ok, 3:1 moves into 2:1's row
+    despawn 3:1: ok, it was the last row
+    spawn with life 1: pending 0 is 3:2
+    set pending 0 life 5: ok, 3:2 has life 5
+    despawn 2:1: skipped, 2:1 is dead
+the world after the frame
+    row 0  4:1  life 2
+    row 1  1:1  life 3
+    row 2  3:2  life 5
+things left with no life: none
+commands left in the buffer: 0

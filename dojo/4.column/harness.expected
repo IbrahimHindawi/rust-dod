@@ -1,0 +1,24 @@
+dojo: 4. a type-erased column
+scenario
+    push 3 zeroed rows: len: 3
+    row 2 as bytes: 00 00 00 00 00 00 00 00 00 00 00 00
+    write 3 Vec3s through slice_mut, read them through slice: (1 2 3) (4 5 6) (7 8 9)
+    row 1 as bytes is 4.0, 5.0 and 6.0: 00 00 80 40 00 00 a0 40 00 00 c0 40
+    write row 0 as bytes, read it as a Vec3: Vec3 { x: -1.0, y: -2.0, z: -3.0 }
+    swap_remove row 0: the last row moves in; len: 2
+    row 0 is now: Vec3 { x: 7.0, y: 8.0, z: 9.0 }
+    row 2, past the rows in use: panics: true
+    read it as u32, the wrong size: panics: true
+    read it as [u8; 12], the right size, aligned to 1: panics: true
+    a column aligned to 32: panics: true
+    a column aligned to 3: panics: true
+    push 100 rows of 16 bytes aligned to 16: len: 100
+    the typed view starts on a 16-byte boundary: true
+    a column of zero-byte tags: push 3, swap_remove 1, tags in slice: 2
+    a tag's row as bytes: []
+fuzz: 20000 operations from seed 1, checked after each
+    [u8; 3], 3 bytes aligned to 1
+    u32, 4 bytes aligned to 4
+    Vec3, 12 bytes aligned to 4
+    Vec4, 16 bytes aligned to 16
+PASS

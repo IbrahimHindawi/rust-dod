@@ -97,3 +97,9 @@ After the course, the [advanced lessons](../docs/README.md) go underneath it:
 memory layout, aliasing and SIMD. Lesson 7, [layout follows
 access](../docs/7_access_patterns.md), is the bridge: why an ECS stores
 components the way it does.
+
+The building blocks the chapters are made of (the free list, swap-remove,
+the slot map, the type-erased column and the command buffer) each have a
+playground and a kata in [the dojo](../dojo/README.md), to watch them work on
+their own and to practise writing them. Each chapter's guide says which
+blocks it uses.

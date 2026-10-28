@@ -1,0 +1,25 @@
+alloc a, b, c, d: four new indices, each in its first life
+    a 0:1  b 1:1  c 2:1  d 3:1
+    generations  0:1  1:1  2:1  3:1
+    free list    []
+free b, then d: their generations go up now, before anyone reuses them
+    generations  0:1  1:2  2:1  3:2
+    free list    [1 3]
+alloc e: alloc takes from the end of the free list, so index 3, in its next life
+    e 3:2
+    generations  0:1  1:2  2:1  3:2
+    free list    [1]
+the old handles
+    d 3:1 is dead
+    e 3:2 is alive
+    b 1:1 is dead
+    d and e share index 3 but not a generation, so d can never reach e
+free d again
+    refused: d is dead, nothing changes
+    generations  0:1  1:2  2:1  3:2
+    free list    [1]
+alloc f, g: index 1 first, then a new one
+    f 1:2  g 4:1
+    generations  0:1  1:2  2:1  3:2  4:1
+    free list    []
+    c 2:1 was never freed: still alive

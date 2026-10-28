@@ -108,3 +108,24 @@ path = "src/6.kayan/kayan.rs"
 [[bin]]
 name = "access_patterns"
 path = "src/7.access_patterns/access_patterns.rs"
+
+# The dojo's playgrounds, dojo/README.md
+[[bin]]
+name = "play_free_list"
+path = "dojo/1.free_list/play_free_list.rs"
+
+[[bin]]
+name = "play_swap_remove"
+path = "dojo/2.swap_remove/play_swap_remove.rs"
+
+[[bin]]
+name = "play_slot_map"
+path = "dojo/3.slot_map/play_slot_map.rs"
+
+[[bin]]
+name = "play_column"
+path = "dojo/4.column/play_column.rs"
+
+[[bin]]
+name = "play_commands"
+path = "dojo/5.commands/play_commands.rs"

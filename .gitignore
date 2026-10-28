@@ -1,2 +1,5 @@
 build/
 target/
+# The dojo: your katas, and the clock of the one you started.
+dojo/*/kata.rs
+dojo/.started.json

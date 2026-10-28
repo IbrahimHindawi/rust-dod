@@ -1,0 +1,19 @@
+insert three textures
+    grass 0:1  stone 1:1  water 2:1
+    slots    0: generation 1, row 0 | 1: generation 1, row 1 | 2: generation 1, row 2
+    rows     0:1 grass | 1:1 stone | 2:1 water
+remove stone: free index 1 in its next life, and water moves into row 1
+    slots    0: generation 1, row 0 | 1: generation 2, free | 2: generation 1, row 1
+    rows     0:1 grass | 2:1 water
+    water 2:1: water
+    stone 1:1: nothing: it is gone
+insert lava: index 1 again, generation 2, in a new row at the end
+    lava 1:2
+    slots    0: generation 1, row 0 | 1: generation 2, row 2 | 2: generation 1, row 1
+    rows     0:1 grass | 2:1 water | 1:2 lava
+    stone 1:1: nothing: it is gone
+    lava 1:2: lava
+remove grass: lava, in the last row, moves into row 0
+    slots    0: generation 2, free | 1: generation 2, row 0 | 2: generation 1, row 1
+    rows     1:2 lava | 2:1 water
+    lava 1:2: lava  water 2:1: water  grass 0:1: nothing: it is gone

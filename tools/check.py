@@ -7,6 +7,11 @@
     python tools/check.py --clippy      also run cargo clippy over everything
     python tools/check.py --miri        run the programs that use `unsafe` under Miri
 
+The dojo's blocks are checked too (`python tools/check.py dojo` for only them):
+each block's harness is built with its reference solution and must print its
+harness.expected; level 1 must build and fail, since it has a gap; level 2
+must build. The playgrounds are [[bin]]s, so they are checked like the rest.
+
 A program passes only if every step is clean:
 
   1. rustc reports no warnings (-D warnings),
@@ -97,6 +102,78 @@ def check_miri(name: str, source: Path) -> tuple[bool, str]:
     return compare(ran.stdout, source.with_suffix(".expected"), False)
 
 
+# ---------------------------------------------------------------- the dojo
+
+DOJO = ROOT / "dojo"
+CLIPPY_DOJO = ["-A", "clippy::new_without_default", "-A", "clippy::len_without_is_empty"]
+
+
+def dojo_blocks() -> list[Path]:
+    return sorted(p for p in DOJO.iterdir() if p.is_dir() and re.match(r"\d+\.", p.name))
+
+
+# A harness is built next to a kata.rs. Here the kata is the solution, or a
+# level, copied into a build folder with the harness and the shared dojo.rs.
+def dojo_build(rustc: str, block: Path, kata: Path, where: str, release: bool,
+               flags: list[str], driver: str | None = None) -> tuple[Path | None, str]:
+    work = OUT / ("release" if release else "debug") / "dojo"
+    folder = work / block.name / where
+    folder.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(block / "harness.rs", folder / "harness.rs")
+    shutil.copyfile(kata, folder / "kata.rs")
+    # The harness says #[path = "../dojo.rs"].
+    shutil.copyfile(DOJO / "dojo.rs", folder.parent / "dojo.rs")
+    exe = folder / ("harness.exe" if os.name == "nt" else "harness")
+    opt = ["-C", "opt-level=3", "-C", "debug-assertions=off"] if release else []
+    built = run([driver or rustc, "--edition", "2024", "-g", *opt, *flags, "harness.rs", "-o", exe.name], cwd=folder)
+    if built.returncode != 0 or built.stdout.strip():
+        return None, built.stdout
+    return exe, ""
+
+
+def check_dojo(rustc: str, block: Path, release: bool, bless: bool) -> tuple[bool, str]:
+    exe, err = dojo_build(rustc, block, block / "solution" / "kata.rs", "solution", release, ["-D", "warnings"])
+    if not exe:
+        return False, "rustc, harness with the solution:\n" + err
+    ran = run([str(exe)])
+    if ran.returncode != 0:
+        return False, f"the solution fails its harness, exit {ran.returncode}:\n{ran.stdout}"
+    ok, detail = compare(ran.stdout, block / "harness.expected", bless)
+    if not ok:
+        return False, detail
+    for level in (1, 2):
+        exe, err = dojo_build(rustc, block, block / "levels" / f"{level}.rs", f"level{level}", release,
+                              ["-D", "warnings", "-A", "unused"])
+        if not exe:
+            return False, f"rustc, harness with level {level}:\n" + err
+        if level == 1 and run([str(exe)]).returncode == 0:
+            return False, "level 1 passes the harness as given; its gap is not a gap"
+    return True, detail
+
+
+def clippy_dojo(rustc: str, block: Path) -> tuple[bool, str]:
+    driver = shutil.which("clippy-driver")
+    if not driver:
+        return False, "clippy-driver not found"
+    exe, err = dojo_build(rustc, block, block / "solution" / "kata.rs", "clippy", False,
+                          ["-D", "warnings", *CLIPPY_DOJO], driver)
+    return exe is not None, err
+
+
+def miri_dojo(block: Path) -> tuple[bool, str]:
+    pkg = OUT / "miri" / block.name
+    pkg.mkdir(parents=True, exist_ok=True)
+    harness = OUT / "debug" / "dojo" / block.name / "solution" / "harness.rs"
+    (pkg / "Cargo.toml").write_text(
+        f'[package]\nname = "dojo-check"\nversion = "0.1.0"\nedition = "2024"\nautobins = false\n\n'
+        f'[[bin]]\nname = "harness"\npath = "{harness.as_posix()}"\n', encoding="utf-8")
+    env = dict(os.environ, MIRIFLAGS="-Zmiri-strict-provenance")
+    ran = run(["cargo", "+nightly", "miri", "run", "-q", "--", "--ops", "300"], cwd=pkg, env=env)
+    if ran.returncode != 0 or "PASS" not in ran.stdout.splitlines():
+        return False, f"miri, exit {ran.returncode}:\n{ran.stdout}"
+    return True, ""
+
+
 def main() -> int:
     args = sys.argv[1:]
     release = "--release" in args
@@ -119,12 +196,32 @@ def main() -> int:
             print("     " + detail.replace("\n", "\n     "))
     print(f"{len(programs) - failed} of {len(programs)} passed")
 
+    blocks = [b for b in dojo_blocks()
+              if not filters or any(f in b.relative_to(ROOT).as_posix() for f in filters)]
+    dojo_failed = 0
+    for block in blocks:
+        ok, detail = check_dojo(rustc, block, release, bless)
+        print(f"{'ok  ' if ok else 'FAIL'} {block.relative_to(ROOT).as_posix()}, the solution and the levels"
+              + (f"  ({detail})" if ok and detail else ""))
+        if not ok:
+            dojo_failed += 1
+            print("     " + detail.replace("\n", "\n     "))
+    if blocks:
+        print(f"{len(blocks) - dojo_failed} of {len(blocks)} dojo blocks passed")
+    failed += dojo_failed
+
     if "--clippy" in args:
         clippy = run(["cargo", "clippy", "-q", "--all-targets", "--", "-D", "warnings"])
         print("clippy: " + ("clean" if clippy.returncode == 0 and not clippy.stdout.strip() else "FAIL"))
         if clippy.returncode != 0 or clippy.stdout.strip():
             failed += 1
             print("     " + clippy.stdout.replace("\n", "\n     "))
+        for block in blocks:
+            ok, detail = clippy_dojo(rustc, block)
+            print(f"clippy: {'clean' if ok else 'FAIL'} {block.relative_to(ROOT).as_posix()}, the solution")
+            if not ok:
+                failed += 1
+                print("     " + detail.replace("\n", "\n     "))
 
     if "--miri" in args:
         # Only the programs with an `unsafe` block: Miri is slow, and safe Rust
@@ -136,6 +233,15 @@ def main() -> int:
             if not ok:
                 failed += 1
                 print("     " + detail.replace("\n", "\n     "))
+        # The dojo's solutions with `unsafe`, through their harnesses, with a
+        # short fuzz run.
+        for block in blocks:
+            if "unsafe {" in (block / "solution" / "kata.rs").read_text(encoding="utf-8"):
+                ok, detail = miri_dojo(block)
+                print(f"{'ok  ' if ok else 'FAIL'} miri {block.relative_to(ROOT).as_posix()}, the solution")
+                if not ok:
+                    failed += 1
+                    print("     " + detail.replace("\n", "\n     "))
     return 1 if failed else 0
 
 

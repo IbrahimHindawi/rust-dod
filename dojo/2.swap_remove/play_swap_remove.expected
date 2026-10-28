@@ -1,0 +1,25 @@
+insert 3, 7, 1, 5, each with a value of ten times its id
+    row         0    1    2    3
+    ids         3    7    1    5
+    values     30   70   10   50
+    rows    1->2  3->0  5->3  7->1  (id -> row)
+remove 7, in row 1: the last row, 5's, moves into the hole
+    row         0    1    2
+    ids         3    5    1
+    values     30   50   10
+    rows    1->2  3->0  5->1  (id -> row)
+    get 5: 50
+    get 7: nothing
+insert 9: a new row at the end
+    row         0    1    2    3
+    ids         3    5    1    9
+    values     30   50   10   90
+    rows    1->2  3->0  5->1  9->3  (id -> row)
+    get 5: 50
+    get 9: 90
+remove 3, in row 0: the last row, 9's, moves into it
+    row         0    1    2
+    ids         9    5    1
+    values     90   50   10
+    rows    1->2  5->1  9->0  (id -> row)
+    get 9: 90  get 5: 50  get 1: 10

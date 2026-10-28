@@ -1,0 +1,14 @@
+dojo: 5. a command buffer
+scenario
+    a world of three: 0:1=1 1:1=2 2:1=3
+    record: set a 10, despawn b, spawn 40, set it 41, despawn b, set b 20: 6
+    the world before apply, unchanged: 0:1=1 1:1=2 2:1=3
+    apply: applied 4, skipped 2
+    the spawn reused b's index, in its next life: 0:1=10 1:2=41 2:1=3
+    b after apply: None
+    commands left in the buffer: 0
+    apply the empty buffer: applied 0, skipped 0
+    the buffer again: despawn c, spawn 50, despawn it, set it 51: applied 3, skipped 1
+    the world: 0:1=10 1:2=41
+fuzz: 20000 operations from seed 1, checked after each
+PASS

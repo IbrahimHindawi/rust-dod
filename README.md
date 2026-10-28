@@ -1,6 +1,6 @@
 # rust-dod
 
-Data-oriented design in Rust, in two courses:
+Data-oriented design in Rust, in two courses and a dojo:
 
 1. **Build an ECS.** Start here. Fifteen chapters that build an archetype
    entity component system from nothing, in the order of its name: entities,
@@ -11,6 +11,9 @@ Data-oriented design in Rust, in two courses:
    loop fetches from memory, aliasing and what a `&mut` slice promises, what
    the compiler vectorizes and how to check it in the assembly, and which
    layout suits which access pattern.
+3. **The dojo.** The five building blocks an ECS is made of, taken out on
+   their own: a playground to watch each one work and break, and a kata to
+   write it yourself, timed, against a harness, until your hands know it.
 
 There is no renderer, no window and no crate to install: only data, and the
 loops that stream it. Every program is one file, and builds with plain
@@ -59,6 +62,26 @@ neighbours shows exactly what a chapter changed:
     git diff --no-index ecs/src/2.components/2.5.typed_access/typed_access.rs ecs/src/2.components/2.6.add_remove/add_remove.rs
 
 The ECS is called kayan, after the C sketch it grew out of.
+
+## The dojo
+
+| | block | what it is |
+|---|---|---|
+| 1 | [free list and generations](dojo/1.free_list/README.md) | handles that are safe to keep after what they name is gone |
+| 2 | [swap-remove and the back-reference](dojo/2.swap_remove/README.md) | values packed with no holes, found by id: a sparse set |
+| 3 | [the slot map](dojo/3.slot_map/README.md) | 1 and 2 together: handles into packed values |
+| 4 | [a type-erased column](dojo/4.column/README.md) | an array of any type as bytes, viewed as a typed slice |
+| 5 | [a command buffer](dojo/5.commands/README.md) | structural changes recorded now and applied later |
+
+    python tools/dojo.py                      your reps, and which blocks are due
+    python tools/dojo.py play slot_map        watch it: the playground
+    python tools/dojo.py start slot_map 2     write it: a kata from level 2, timed
+    python tools/dojo.py slot_map             check it against the harness
+
+Each block has three levels (one function, every function, a blank page) and
+a few variations, and the runner keeps your times and spaces your reps out.
+[dojo/README.md](dojo/README.md) has the rest. Each course chapter says which
+blocks it is built from.
 
 ## Advanced: layout and SIMD
 
@@ -154,6 +177,10 @@ program or a guide run `python tools/site.py` to bring it up to date.
     includes/
       kayan.rs                  lesson 4's world, used by lessons 5 and 6
     docs/                       the advanced lessons' guides
+    dojo/
+      1.free_list/              a block: README, playground, harness, levels, solution
+      ...
+      dojo.rs                   what every harness shares
     website/
       index.html                everything as one page: guide, code, output
       template.html             its layout and styles
@@ -161,6 +188,7 @@ program or a guide run `python tools/site.py` to bring it up to date.
       check.py                  build, run and compare every program
       check_snippets.py         check every sample in the guides is in its program
       site.py                   rebuild website/index.html from the repo
+      dojo.py                   start, run and time the dojo's katas
     Cargo.toml                  the program list, for cargo and check.py
 
 ## License

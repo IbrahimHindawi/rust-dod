@@ -1,0 +1,16 @@
+dojo: 3. the slot map
+scenario
+    insert 10, 20, 30 as a, b, c: 0:1 1:1 2:1
+    remove b: 20
+    c moved into b's row: handles by row: 0:1 2:1
+    values by row: 10 30
+    get c, through its slot: 30
+    get b: None
+    contains b: false
+    remove b again: None
+    insert 40 as d: b's index, next life: 1:2
+    get b, now that its index is d's: None
+    get_mut a, add 1: 11
+    len: 3
+fuzz: 20000 operations from seed 1, checked after each
+PASS

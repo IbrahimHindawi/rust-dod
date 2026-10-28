@@ -1,0 +1,14 @@
+dojo: 1. free list and generations
+scenario
+    alloc a, b, c: 0:1 1:1 2:1
+    free b: ok
+    b is alive: false
+    free b again: dead
+    alloc d, b's index in its next life: 1:2
+    b is alive: false
+    d is alive: true
+    live, slots: 3 3
+    alloc e, nothing free: a new index: 3:1
+    live, slots: 4 4
+fuzz: 20000 operations from seed 1, checked after each
+PASS

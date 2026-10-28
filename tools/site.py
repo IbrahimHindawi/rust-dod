@@ -102,6 +102,9 @@ LINKS = {
 def link_target(url):
     base = url.split("/")[-1]
     if url.startswith("http"): return url, True
+    dojo = re.search(r"(?:^|/)\d\.(\w+)/README\.md$", url)
+    if dojo: return "#dojo-" + dojo.group(1).replace("_", "-"), False
+    if url.endswith("dojo/README.md"): return "#dojo", False
     if base in LINKS: return LINKS[base], False
     if url.endswith("docs/README.md") and not url.endswith("ecs/docs/README.md"): return "#advanced", False
     if base == "README.md": return "#overview", False
@@ -275,6 +278,26 @@ for tok, num, title, base, doc, part in ecs_lessons:
     nav_ecs[part].append((tok, num, title, ecs_about.get(num, "")))
     views.append(program_view(tok, f"Build an ECS · part {part}, {ECS_PARTS[part].lower()} · {num}", title, base, guide, "chapter"))
 
+# ---- The dojo: a playground and a kata for each building block
+nav_dojo = [('dojo', '', 'About the dojo', 'Playgrounds and katas for the blocks an ECS is made of')]
+dojo_about = {m.group(1): m.group(2).strip()
+              for m in re.finditer(r"^\| (\d) \| \[[^\]]+\]\([^)]+\) \| ([^|]+) \|", read("dojo/README.md"), re.M)}
+views.append(f'''<section class="view" id="v-dojo" data-view="dojo" hidden>
+<header class="vhead"><p class="eyebrow">The dojo · five building blocks</p><h1>The dojo</h1><p class="path">dojo/README.md</p></header>
+<div class="prose">{md(read("dojo/README.md"), skip_title=True)}</div>
+</section>''')
+for block in sorted((REPO / "dojo").glob("[0-9].*")):
+    num, name = block.name.split(".", 1)
+    tok = "dojo-" + name.replace("_", "-")
+    readme = read(f"dojo/{block.name}/README.md")
+    title = readme.split("\n", 1)[0].lstrip("# ").split(" ", 1)[1]
+    title = title[0].upper() + title[1:]
+    guide = re.sub(r"^`dojo/[^`]+`\n\n", "", readme, count=1, flags=re.M)
+    note = (f'<p class="note">The playground. The kata\'s harness is <code>dojo/{block.name}/harness.rs</code>, '
+            f'and where each level starts is <code>dojo/{block.name}/levels/</code>.</p>')
+    nav_dojo.append((tok, num, title, dojo_about.get(num, "")))
+    views.append(program_view(tok, f"The dojo · block {num}", title, f"dojo/{block.name}/play_{name}", guide, "playground", note))
+
 # ---- Advanced: layout and SIMD, the seven lessons
 nav_adv = [('advanced', '', 'About these lessons', 'Memory, aliasing and SIMD, for after the course')]
 diagram = '''
@@ -312,16 +335,18 @@ views.append(f'''<section class="view" id="v-library" data-view="library" hidden
 {code_block(lib, "rust")}</section>''')
 
 tools_html = ""
-for p, lang in (("tools/check.py", "py"), ("tools/check_snippets.py", "py"), ("Cargo.toml", "toml"), (".gitignore", "txt"), ("LICENSE", "txt")):
+for p, lang in (("tools/check.py", "py"), ("tools/check_snippets.py", "py"), ("tools/dojo.py", "py"),
+                ("dojo/dojo.rs", "rust"), ("Cargo.toml", "toml"), (".gitignore", "txt"), ("LICENSE", "txt")):
     s = read(p)
     tools_html += f'<h2 class="filehead">{p}</h2>' + code_block(s, lang)
-nav_src.append(('tools', '', 'Build and check', 'check.py, check_snippets.py, Cargo.toml, license'))
+nav_src.append(('tools', '', 'Build and check', 'check.py, the dojo runner, Cargo.toml, license'))
 views.append(f'''<section class="view" id="v-tools" data-view="tools" hidden>
 <header class="vhead"><p class="eyebrow">Tooling</p><h1>Build and check</h1><p class="path">tools/check.py runs every program and diffs its output</p></header>
 {tools_html}</section>''')
 
 nav_html = (group("Start", nav_start)
             + "".join(group(f"Part {part} · {name}", nav_ecs[part]) for part, name in ECS_PARTS.items())
+            + group("The dojo · building blocks", nav_dojo)
             + group("Advanced · layout and SIMD", nav_adv)
             + group("Source", nav_src))
 
