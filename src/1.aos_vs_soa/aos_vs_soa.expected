@@ -1,0 +1,11 @@
+262144 particles, 60 steps
+array of structs: a particle is 68 bytes, movement uses 24 of them
+  bytes fetched per step: 17825792
+struct of arrays: movement reads two arrays of 12-byte Vec3
+  bytes fetched per step: 6291456
+split columns: movement reads six arrays of 4-byte f32
+  bytes fetched per step: 6291456
+checksum aos 38572460.505
+checksum soa 38572460.505
+checksum split 38572460.505
+same result: yes

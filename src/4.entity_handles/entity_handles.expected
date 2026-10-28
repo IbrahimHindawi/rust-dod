@@ -1,0 +1,27 @@
+spawn a, b, c
+    a = 0:1 in table 0 row 0 {Position Velocity} at (1.0, 0.0)
+    b = 1:1 in table 0 row 1 {Position Velocity} at (2.0, 0.0)
+    c = 2:1 in table 0 row 2 {Position Velocity} at (3.0, 0.0)
+despawn a: c is swapped into a's row, and its slot follows
+    despawn returned ok
+    a = 0:1 is dead
+    c = 2:1 in table 0 row 0 {Position Velocity} at (3.0, 0.0)
+spawn d: it reuses a's index with the next generation
+    d = 0:2 in table 0 row 2 {Position Velocity} at (4.0, 0.0)
+    a = 0:1 is dead
+    a's position through the old handle is None
+    despawning a again returns dead
+    no entity is None, and an Option<Entity> is 8 bytes, an Entity's size
+give b health: b moves to a new table and keeps its position
+    b = 1:1 in table 1 row 0 {Position Velocity Health} at (2.0, 0.0) health 75
+    d = 0:2 in table 0 row 1 {Position Velocity} at (4.0, 0.0)
+take b's velocity: another move
+    b = 1:1 in table 2 row 0 {Position Health} at (2.0, 0.0) health 75
+the tables, with the handles in each row
+    table 0 {Position Velocity}: 2:1 0:2
+    table 1 {Position Velocity Health}:
+    table 2 {Position Health}: 1:1
+spawn 40 more
+    despawned every other one; 20 of the 20 left read their own position
+    verify: 0 problems
+    23 entities alive, 3 tables

@@ -81,6 +81,14 @@ def check(rustc: str, name: str, source: Path, release: bool, bless: bool) -> tu
     return compare(ran.stdout, source.with_suffix(".expected"), bless)
 
 
+def with_modules(source: Path) -> str:
+    """A program's text, and the text of each module it includes by path."""
+    text = source.read_text(encoding="utf-8")
+    for path in re.findall(r'^#\[path = "([^"]+)"\]', text, re.M):
+        text += (source.parent / path).read_text(encoding="utf-8")
+    return text
+
+
 def check_miri(name: str, source: Path) -> tuple[bool, str]:
     env = dict(os.environ, MIRIFLAGS="-Zmiri-strict-provenance")
     ran = run(["cargo", "+nightly", "miri", "run", "-q", "--bin", name], env=env)
@@ -121,7 +129,7 @@ def main() -> int:
     if "--miri" in args:
         # Only the programs with an `unsafe` block: Miri is slow, and safe Rust
         # has nothing for it to find.
-        unsafe_ones = [(n, p) for n, p in programs if "unsafe {" in p.read_text(encoding="utf-8")]
+        unsafe_ones = [(n, p) for n, p in programs if "unsafe {" in with_modules(p)]
         for name, source in unsafe_ones:
             ok, detail = check_miri(name, source)
             print(f"{'ok  ' if ok else 'FAIL'} miri {source.relative_to(ROOT).as_posix()}")

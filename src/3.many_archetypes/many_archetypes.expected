@@ -1,0 +1,33 @@
+rock signature 1: Position
+ship signature 7: Position Velocity Health
+bullet signature 11: Position Velocity Damage
+turret signature 13: Position Health Damage
+    rock    row 0  at (  5.0,   5.0)
+    ship    row 0  at (  0.0,   0.0)  health  50.0/100
+    ship    row 1  at (  0.0,  10.0)  health  50.0/100
+    bullet  row 0  at (  1.0,   0.0)  damage 10
+    bullet  row 1  at (  2.0,   0.0)  damage 10
+    bullet  row 2  at (  3.0,   0.0)  damage 10
+    turret  row 0  at ( 20.0,   0.0)  health  40.0/200  damage 25
+frame 1
+    move visits ship
+    regen visits ship
+    move visits bullet
+    rock    row 0  at (  5.0,   5.0)
+    ship    row 0  at (  1.0,   0.0)  health  55.0/100
+    ship    row 1  at (  1.0,  10.0)  health  55.0/100
+    bullet  row 0  at (  1.0,   4.0)  damage 10
+    bullet  row 1  at (  2.0,   4.0)  damage 10
+    bullet  row 2  at (  3.0,  -4.0)  damage 10
+    turret  row 0  at ( 20.0,   0.0)  health  40.0/200  damage 25
+frame 2
+    move visits ship
+    regen visits ship
+    move visits bullet
+    rock    row 0  at (  5.0,   5.0)
+    ship    row 0  at (  2.0,   0.0)  health  60.0/100
+    ship    row 1  at (  2.0,  10.0)  health  60.0/100
+    bullet  row 0  at (  1.0,   8.0)  damage 10
+    bullet  row 1  at (  2.0,   8.0)  damage 10
+    bullet  row 2  at (  3.0,  -8.0)  damage 10
+    turret  row 0  at ( 20.0,   0.0)  health  40.0/200  damage 25

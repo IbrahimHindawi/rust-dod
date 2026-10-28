@@ -79,3 +79,32 @@ path = "ecs/src/3.systems/3.3.commands/commands.rs"
 [[bin]]
 name = "game"
 path = "ecs/src/3.systems/3.4.game/game.rs"
+
+# Advanced: layout and SIMD, docs/README.md
+[[bin]]
+name = "aos_vs_soa"
+path = "src/1.aos_vs_soa/aos_vs_soa.rs"
+
+[[bin]]
+name = "archetype_table"
+path = "src/2.archetype_table/archetype_table.rs"
+
+[[bin]]
+name = "many_archetypes"
+path = "src/3.many_archetypes/many_archetypes.rs"
+
+[[bin]]
+name = "entity_handles"
+path = "src/4.entity_handles/entity_handles.rs"
+
+[[bin]]
+name = "inspector"
+path = "src/5.inspector/inspector.rs"
+
+[[bin]]
+name = "kayan"
+path = "src/6.kayan/kayan.rs"
+
+[[bin]]
+name = "access_patterns"
+path = "src/7.access_patterns/access_patterns.rs"

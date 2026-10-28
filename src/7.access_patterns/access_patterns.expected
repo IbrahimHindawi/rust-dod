@@ -1,0 +1,8 @@
+1048576 bodies, 1048576 contacts, 2 steps
+bytes per body: aos 32, columns 24, split 24, blocks 24
+cache lines one lookup touches: aos 1.000, columns 1.125, split 3.000, blocks 2.000
+checksum aos 157337021.562
+checksum columns 157337021.562
+checksum split 157337021.562
+checksum blocks 157337021.562
+same result: yes

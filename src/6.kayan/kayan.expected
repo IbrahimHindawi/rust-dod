@@ -1,0 +1,75 @@
+frame 1
+    a wing of three drones enters at (20.0, 0.0)
+frame 20
+    bullet 4:1 hits drone 2:1, health 70.0
+frame 21
+    a wing of three drones enters at (0.0, -20.0)
+frame 26
+    bullet 5:1 hits drone 2:1, health 40.0
+    drone 2:1 catches fire
+frame 32
+    bullet 8:1 hits drone 2:1, health 6.0
+frame 38
+    bullet 5:2 hits drone 2:1, health -28.8
+    drone 2:1 is destroyed
+    drone 1:1 is caught in the blast, health 60.0
+    drone 3:1 is caught in the blast, health 60.0
+frame 41
+    a wing of three drones enters at (-20.0, 0.0)
+frame 50
+    bullet 10:1 hits drone 1:1, health 21.2
+frame 56
+    bullet 11:1 hits drone 1:1, health -13.6
+    drone 1:1 is destroyed
+    drone 3:1 is caught in the blast, health 5.6
+frame 61
+    a wing of three drones enters at (0.0, 20.0)
+frame 64
+    drone 3:1 is destroyed
+frame 77
+    bullet 3:2 hits drone 6:1, health 70.0
+frame 81
+    a wing of three drones enters at (20.0, 0.0)
+frame 83
+    bullet 8:4 hits drone 6:1, health 40.0
+    drone 6:1 catches fire
+frame 89
+    bullet 8:5 hits drone 7:1, health 70.0
+frame 95
+    bullet 8:6 hits drone 7:1, health 40.0
+    drone 7:1 catches fire
+frame 101
+    bullet 8:7 hits drone 4:2, health 70.0
+frame 107
+    bullet 8:8 hits drone 4:2, health 40.0
+    drone 4:2 catches fire
+frame 113
+    bullet 8:9 hits drone 6:1, health -13.2
+    drone 6:1 is destroyed
+    drone 7:1 is caught in the blast, health -14.4
+    drone 4:2 is caught in the blast, health -4.8
+    drone 7:1 is destroyed
+    drone 6:1 is caught in the blast, health -54.0
+    drone 4:2 is caught in the blast, health -44.8
+    drone 4:2 is destroyed
+    drone 6:1 is caught in the blast, health -94.0
+    drone 7:1 is caught in the blast, health -54.4
+frame 122
+    bullet 4:3 hits drone 2:2, health 70.0
+frame 128
+    bullet 4:4 hits drone 2:2, health 40.0
+    drone 2:2 catches fire
+frame 134
+    bullet 4:5 hits drone 5:3, health 70.0
+    drone 5:3 reaches the turret with 70.0 health
+    drone 9:1 reaches the turret with 100.0 health
+    drone 2:2 reaches the turret with 35.2 health
+after 140 frames
+    drones: 15 entered, 6 destroyed, 3 leaked
+    bullets: 20 fired, 16 hit, 3 expired
+    commands skipped because their entity was already gone: 3
+    8 entities alive in 4 tables
+    table 0 {Position Turret}, rows in use: 1
+    table 1 {Position Velocity Health}, rows in use: 6
+    table 2 {Position Velocity Damage Lifetime}, rows in use: 1
+    table 3 {Position Velocity Health Burning}, rows in use: 0

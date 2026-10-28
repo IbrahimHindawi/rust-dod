@@ -6,8 +6,8 @@ come from.
 Each guide in ecs/docs and docs names its program's source on a line of its
 own, in backticks. Then:
 
-  * every ```rust block must appear in that source exactly, as consecutive
-    lines, indentation included;
+  * every ```rust block must appear in that source, or in a module it brings
+    in with #[path], exactly, as consecutive lines, indentation included;
   * every plain ``` block whose first line is a line of the program's
     .expected is an output sample: its lines, except "...", must appear in the
     .expected in the same order.
@@ -47,6 +47,15 @@ def blocks(text: str) -> list[tuple[str, list[str], int]]:
     return found
 
 
+def with_modules(source_path: Path) -> list[str]:
+    """The program's text, and the text of each module it includes by path."""
+    source = source_path.read_text(encoding="utf-8")
+    texts = [source]
+    for path in re.findall(r'^#\[path = "([^"]+)"\]', source, re.M):
+        texts.append((source_path.parent / path).read_text(encoding="utf-8"))
+    return texts
+
+
 def in_order(sample: list[str], expected: list[str]) -> bool:
     at = 0
     for line in sample:
@@ -69,13 +78,13 @@ def main() -> int:
             if not m:
                 continue
             source_path = ROOT / m.group(1)
-            source = source_path.read_text(encoding="utf-8")
+            sources = with_modules(source_path)
             expected_path = source_path.with_suffix(".expected")
             expected = expected_path.read_text(encoding="utf-8").split("\n") if expected_path.exists() else []
             for info, body, line in blocks(text):
                 if info == "rust":
                     checked += 1
-                    if "\n".join(body) not in source:
+                    if not any("\n".join(body) in text for text in sources):
                         failures += 1
                         print(f"{doc.relative_to(ROOT)}:{line}: rust sample not found in {m.group(1)}")
                         for b in body[:3]:

@@ -1,0 +1,41 @@
+a table with room for 8 sparks, 20 bytes of components a row
+spark 8 did not fit: the table is full
+    row 0  spark 0  position (  0.00,   0.00)  life 0.50
+    row 1  spark 1  position (  1.00,   0.00)  life 3.00
+    row 2  spark 2  position (  2.00,   0.00)  life 1.50
+    row 3  spark 3  position (  3.00,   0.00)  life 4.00
+    row 4  spark 4  position (  4.00,   0.00)  life 2.50
+    row 5  spark 5  position (  5.00,   0.00)  life 1.00
+    row 6  spark 6  position (  6.00,   0.00)  life 3.50
+    row 7  spark 7  position (  7.00,   0.00)  life 2.00
+frame 1
+    spark 0 in row 0 expired; spark 7 moved from row 7 into it
+    row 0  spark 7  position (  7.50,   3.50)  life 1.50
+    row 1  spark 1  position (  1.50,   0.50)  life 2.50
+    row 2  spark 2  position (  2.50,   1.00)  life 1.00
+    row 3  spark 3  position (  3.50,   1.50)  life 3.50
+    row 4  spark 4  position (  4.50,   2.00)  life 2.00
+    row 5  spark 5  position (  5.50,   2.50)  life 0.50
+    row 6  spark 6  position (  6.50,   3.00)  life 3.00
+frame 2
+    spark 5 in row 5 expired; spark 6 moved from row 6 into it
+    row 0  spark 7  position (  8.00,   7.00)  life 1.00
+    row 1  spark 1  position (  2.00,   1.00)  life 2.00
+    row 2  spark 2  position (  3.00,   2.00)  life 0.50
+    row 3  spark 3  position (  4.00,   3.00)  life 3.00
+    row 4  spark 4  position (  5.00,   4.00)  life 1.50
+    row 5  spark 6  position (  7.00,   6.00)  life 2.50
+frame 3
+    spark 2 in row 2 expired; spark 6 moved from row 5 into it
+    row 0  spark 7  position (  8.50,  10.50)  life 0.50
+    row 1  spark 1  position (  2.50,   1.50)  life 1.50
+    row 2  spark 6  position (  7.50,   9.00)  life 2.00
+    row 3  spark 3  position (  4.50,   4.50)  life 2.50
+    row 4  spark 4  position (  5.50,   6.00)  life 1.00
+frame 4
+    spark 7 in row 0 expired; spark 4 moved from row 4 into it
+    row 0  spark 4  position (  6.00,   8.00)  life 0.50
+    row 1  spark 1  position (  3.00,   2.00)  life 1.00
+    row 2  spark 6  position (  8.00,  12.00)  life 1.50
+    row 3  spark 3  position (  5.00,   6.00)  life 2.00
+4 sparks left
