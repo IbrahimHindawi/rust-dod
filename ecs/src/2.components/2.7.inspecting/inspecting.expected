@@ -1,0 +1,66 @@
+0:1 {Position Turret}
+    Position
+        at:
+            x: 0.00
+            y: 0.00
+    Turret
+        cooldown: 0.50
+1:1 {Position Velocity Health}
+    Position
+        at:
+            x: 20.00
+            y: 5.00
+    Velocity
+        per_second:
+            x: -1.00
+            y: 0.00
+    Health
+        points: 100.00
+        max: 100.00
+2:1 {Position Velocity Health Burning}
+    Position
+        at:
+            x: 30.00
+            y: -5.00
+    Velocity
+        per_second:
+            x: -1.00
+            y: 0.00
+    Health
+        points: 60.00
+        max: 100.00
+    Burning
+        per_second: 10.00
+3:1 {Position Velocity Damage Lifetime}
+    Position
+        at:
+            x: 0.00
+            y: 0.00
+    Velocity
+        per_second:
+            x: 8.00
+            y: 0.00
+    Damage
+        amount: 25.00
+    Lifetime
+        seconds: 2.00
+1:1 (dead)
+
+table 0 {Position Turret}: 1 rows, room for 4
+    Position   8 bytes a row,    8 of   32 bytes in use
+    Turret     8 bytes a row,    8 of   32 bytes in use
+table 1 {Position Velocity Health}: 0 rows, room for 4
+    Position   8 bytes a row,    0 of   32 bytes in use
+    Velocity   8 bytes a row,    0 of   32 bytes in use
+    Health     8 bytes a row,    0 of   32 bytes in use
+table 2 {Position Velocity Health Burning}: 1 rows, room for 4
+    Position   8 bytes a row,    8 of   32 bytes in use
+    Velocity   8 bytes a row,    8 of   32 bytes in use
+    Health     8 bytes a row,    8 of   32 bytes in use
+    Burning    4 bytes a row,    4 of   16 bytes in use
+table 3 {Position Velocity Damage Lifetime}: 1 rows, room for 4
+    Position   8 bytes a row,    8 of   32 bytes in use
+    Velocity   8 bytes a row,    8 of   32 bytes in use
+    Damage     4 bytes a row,    4 of   16 bytes in use
+    Lifetime   4 bytes a row,    4 of   16 bytes in use
+verify: 0 problems

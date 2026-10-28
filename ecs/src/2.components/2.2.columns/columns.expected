@@ -1,0 +1,17 @@
+a position column has 8-byte rows, a health column 8-byte rows
+    grew to room for 2 rows
+    grew to room for 4 rows
+    grew to room for 8 rows
+five rows, written through the typed view:
+    row 0  position ( 0.00,  1.00)  health  50 / 100
+    row 1  position ( 1.00,  1.00)  health  60 / 100
+    row 2  position ( 2.00,  1.00)  health  70 / 100
+    row 3  position ( 3.00,  1.00)  health  80 / 100
+    row 4  position ( 4.00,  1.00)  health  90 / 100
+row 1's health as the column stores it, bytes: 00 00 70 42 00 00 c8 42
+    that is 60.0 and 100.0 as little-endian f32s; the column never knew
+swap-removed row 1: row 4 moved into it, in both columns
+    row 0  position ( 0.00,  1.00)  health  50 / 100
+    row 1  position ( 4.00,  1.00)  health  90 / 100
+    row 2  position ( 2.00,  1.00)  health  70 / 100
+    row 3  position ( 3.00,  1.00)  health  80 / 100

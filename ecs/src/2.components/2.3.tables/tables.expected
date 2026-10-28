@@ -1,0 +1,22 @@
+spawned 6 drones into one table; it grew from 4 rows to 8
+    6 rows, room for 8
+    row 0  0:1  position ( 0.00,  0.00)  health 100
+    row 1  1:1  position (10.00,  0.00)  health 100
+    row 2  2:1  position (20.00,  0.00)  health 100
+    row 3  3:1  position (30.00,  0.00)  health 100
+    row 4  4:1  position (40.00,  0.00)  health 100
+    row 5  5:1  position (50.00,  0.00)  health 100
+despawn 0:1 and 3:1
+    4 rows, room for 8
+    row 0  5:1  position (50.00,  0.00)  health 100
+    row 1  1:1  position (10.00,  0.00)  health 100
+    row 2  2:1  position (20.00,  0.00)  health 100
+    row 3  4:1  position (40.00,  0.00)  health 100
+spawn 3:2: a reused number, the next row, zeroed except what we set
+    5 rows, room for 8
+    row 0  5:1  position (50.00,  0.00)  health 100
+    row 1  1:1  position (10.00,  0.00)  health 100
+    row 2  2:1  position (20.00,  0.00)  health 100
+    row 3  4:1  position (40.00,  0.00)  health 100
+    row 4  3:2  position ( 0.00,  0.00)  health  40
+verify: 0 problems
