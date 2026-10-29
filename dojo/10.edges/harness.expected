@@ -1,0 +1,27 @@
+dojo: 10. memoized edges
+scenario
+    new: how many nodes: 1
+    node 0's signature: {}
+    with(0, 0), position: a new node: 1
+    its signature: {0}
+    with(1, 1), velocity: 2
+    with(2, 2), health: 3
+    with(3, 3), burning: 4
+    its signature: {0 1 2 3}
+    lookups and hits: 4 0
+    without(4, 3): the fire goes out, by the edge back: 3
+    with(3, 3): it catches fire again, by the edge: 4
+    lookups and hits: 4 2
+    with(4, 3): it has 3 already, so it stays: 4
+    without(0, 3): it has no 3 to lose: 0
+    lookups and hits: nothing moved: 4 2
+    without(3, 1): it stops: 5
+    its signature: {0 2}
+    with(5, 3): 6
+    with(6, 1): node 4 is known, the edge to it isn't: 4
+    lookups and hits: 7 2
+    without(4, 1): the edge back: 6
+    lookups and hits: 7 3
+    len: 7
+fuzz: 20000 operations from seed 1, checked after each
+PASS

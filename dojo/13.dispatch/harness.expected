@@ -1,0 +1,21 @@
+dojo: 13. a dispatch table
+scenario
+    add move, collide, die: the order: move collide die
+    insert damage before die: true
+    the order: move collide damage die
+    run: what ran: move collide damage die
+    disable collide: true
+    run: what ran: move damage die
+    the order, with collide still in its place: move collide damage die
+    calls of move, collide: 2 1
+    insert spawn before a system that isn't there: false
+    the order, unchanged: move collide damage die
+    remove collide: true
+    the order: move damage die
+    calls of collide, now it's gone: 0
+    remove collide again: false
+    enable collide, which isn't there: false
+    add collide again: at the end, enabled, calls from 0: 0
+    run: what ran: move damage die collide
+fuzz: 20000 operations from seed 1, checked after each
+PASS

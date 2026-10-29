@@ -1,0 +1,24 @@
+dojo: 11. a reflection walk
+scenario
+    Lamp's record: Lamp, 28 bytes, 6 fields
+    paths(Vec2): x y
+    paths(Lamp): nested fields by path, flicker hidden: on power at.x at.y color.r color.g color.b range
+    paths(Room): the hidden draft left out whole: door light.on light.power light.at.x light.at.y light.color.r light.color.g light.color.b light.range corner.x corner.y
+    get_f32 power: past the padding after on: 60.00
+    get_f32 at.y: at's offset plus y's: 4.00
+    get_f32 range: 10.00
+    get_f32 flicker: hidden from lists, not from paths: 0.25
+    get_f32 on: a u8, not an f32: None
+    get_f32 at: a struct: None
+    get_f32 at.z: no such field: None
+    set_f32 power 75: true
+    set_f32 at.x 5: true
+    the lamp, read back: power and at.x: 75.00 5.00
+    diff with the lamp before: power at.x
+    set_f32 flicker 0.5: true
+    diff again: flicker is hidden: power at.x
+    set_f32 on 0: a u8: false
+    set_f32 color: a struct: false
+    the lamp's on and color, unchanged: 1 255
+fuzz: 20000 operations from seed 1, checked after each
+PASS

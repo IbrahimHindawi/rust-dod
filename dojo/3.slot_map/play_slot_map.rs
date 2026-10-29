@@ -19,14 +19,17 @@
 //
 // The switch: set CHECK_GENERATION to false and run it again. A removed
 // handle still finds a slot, and reads whatever value is in that slot's row
-// now.
+// now. It's a static, read each time it's used, so a debugger can flip it
+// mid-run too: stop on `remove`, set it to false in the watch window, and
+// continue.
 
 // `unsafe` is an error, except where an item allows it by name.
 #![deny(unsafe_code)]
 
 use std::fmt;
+use std::sync::atomic::{AtomicBool, Ordering::Relaxed};
 
-const CHECK_GENERATION: bool = true;
+static CHECK_GENERATION: AtomicBool = AtomicBool::new(true);
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 struct Handle {
@@ -72,7 +75,7 @@ impl SlotMap {
 
     fn contains(&self, h: Handle) -> bool {
         match self.slots.get(h.index as usize) {
-            Some(slot) => !CHECK_GENERATION || slot.generation == h.generation,
+            Some(slot) => !CHECK_GENERATION.load(Relaxed) || slot.generation == h.generation,
             None => false,
         }
     }

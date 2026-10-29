@@ -102,7 +102,7 @@ LINKS = {
 def link_target(url):
     base = url.split("/")[-1]
     if url.startswith("http"): return url, True
-    dojo = re.search(r"(?:^|/)\d\.(\w+)/README\.md$", url)
+    dojo = re.search(r"(?:^|/)\d+\.(\w+)/README\.md$", url)
     if dojo: return "#dojo-" + dojo.group(1).replace("_", "-"), False
     if url.endswith("dojo/README.md"): return "#dojo", False
     if base in LINKS: return LINKS[base], False
@@ -281,12 +281,12 @@ for tok, num, title, base, doc, part in ecs_lessons:
 # ---- The dojo: a playground and a kata for each building block
 nav_dojo = [('dojo', '', 'About the dojo', 'Playgrounds and katas for the blocks an ECS is made of')]
 dojo_about = {m.group(1): m.group(2).strip()
-              for m in re.finditer(r"^\| (\d) \| \[[^\]]+\]\([^)]+\) \| ([^|]+) \|", read("dojo/README.md"), re.M)}
+              for m in re.finditer(r"^\| (\d+) \| \[[^\]]+\]\([^)]+\) \| ([^|]+) \|", read("dojo/README.md"), re.M)}
 views.append(f'''<section class="view" id="v-dojo" data-view="dojo" hidden>
-<header class="vhead"><p class="eyebrow">The dojo · five building blocks</p><h1>The dojo</h1><p class="path">dojo/README.md</p></header>
+<header class="vhead"><p class="eyebrow">The dojo · thirteen building blocks</p><h1>The dojo</h1><p class="path">dojo/README.md</p></header>
 <div class="prose">{md(read("dojo/README.md"), skip_title=True)}</div>
 </section>''')
-for block in sorted((REPO / "dojo").glob("[0-9].*")):
+for block in sorted((REPO / "dojo").glob("[0-9]*.*"), key=lambda p: int(p.name.split(".")[0])):
     num, name = block.name.split(".", 1)
     tok = "dojo-" + name.replace("_", "-")
     readme = read(f"dojo/{block.name}/README.md")

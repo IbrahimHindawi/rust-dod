@@ -20,12 +20,16 @@
 //
 // The switch: set FIX_BACK_REFERENCE to false and run it again. The moved
 // id's row still points where its value used to be, and the next insert
-// writes another id's value there.
+// writes another id's value there. It's a static, read each time it's used,
+// so a debugger can flip it mid-run too: stop on `remove`, set it to false in
+// the watch window, and continue.
 
 // `unsafe` is an error, except where an item allows it by name.
 #![deny(unsafe_code)]
 
-const FIX_BACK_REFERENCE: bool = true;
+use std::sync::atomic::{AtomicBool, Ordering::Relaxed};
+
+static FIX_BACK_REFERENCE: AtomicBool = AtomicBool::new(true);
 
 struct SparseSet {
     values: Vec<u64>,
@@ -49,7 +53,7 @@ impl SparseSet {
         let value = self.values.swap_remove(row);
         self.ids.swap_remove(row);
         if let Some(&moved) = self.ids.get(row)
-            && FIX_BACK_REFERENCE
+            && FIX_BACK_REFERENCE.load(Relaxed)
         {
             self.rows[moved as usize] = Some(row as u32);
         }

@@ -1,0 +1,21 @@
+dojo: 8. index, not pointer
+scenario
+    push_back 10, 20, 30 as a, b, c: 0 1 2
+    write 21 into b, by its index: 10 21 30
+    push_front 5 as d: 3
+    values: 5 10 21 30
+    remove a: 10
+    remove a again: None
+    get a: None
+    insert 25 after b as e: a's node, from the free list: 0
+    values: 5 21 25 30
+    push_back 100 more, so the nodes move; get b by its index: 21
+    remove c: 30
+    insert after c, now removed: None
+    get node 1000, never made: None
+    len: 103
+    the first 4 values: 5 21 25 100
+    head, tail: 3 103
+    next(b), prev(b): 0 3
+fuzz: 20000 operations from seed 1, checked after each
+PASS

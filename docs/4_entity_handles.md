@@ -2,6 +2,8 @@
 
 `src/4.entity_handles/entity_handles.rs`, `includes/kayan.rs`
 
+**In the dojo:** [1. free list and generations](../dojo/1.free_list/README.md), [3. the slot map](../dojo/3.slot_map/README.md), [9. interning](../dojo/9.interning/README.md), each on its own, to watch and to practise.
+
 The world: tables made on demand, entity handles that survive row moves,
 despawning with index reuse, and moving an entity between archetypes when a
 component is added or removed. The code is `includes/kayan.rs`. The lesson

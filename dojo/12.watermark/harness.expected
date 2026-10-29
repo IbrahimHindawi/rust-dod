@@ -1,0 +1,16 @@
+dojo: 12. a watermark
+scenario
+    a new query: checked, scanned, tables: 0 0 none
+    update movers over tables 0 to 2: tables: 1 2
+    checked, scanned: 3 3
+    update movers again, nothing new: tables: 1 2
+    checked, scanned: it looked at nothing: 3 3
+    make tables 3 and 4, update movers: tables: 1 2 3
+    checked, scanned: only 3 and 4 were new: 5 5
+    update healthy for the first time: tables: 2 4
+    checked, scanned: all five: 5 5
+    make table 5, update healthy: tables: 2 4 5
+    checked, scanned: 6 6
+    movers, not updated since: checked: 5
+fuzz: 20000 operations from seed 1, checked after each
+PASS

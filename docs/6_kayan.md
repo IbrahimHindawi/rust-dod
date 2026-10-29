@@ -2,6 +2,8 @@
 
 `src/6.kayan/kayan.rs`
 
+**In the dojo:** [5. a command buffer](../dojo/5.commands/README.md), [7. an arena](../dojo/7.arena/README.md), each on its own, to watch and to practise.
+
 A turret at the centre, five wings of three drones, 140 frames. Seven systems
 run each frame, and every structural change they want goes through a command
 buffer applied at the end of the frame.

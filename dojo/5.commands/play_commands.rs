@@ -19,14 +19,18 @@
 // in a debugger and step through the list.
 //
 // The switch: set DEFER to false, so the systems change the world on the spot,
-// and run it again. Look at which things are left with no life.
+// and run it again. Look at which things are left with no life. It's a
+// static, so a debugger can flip it too: the frame reads it once, at its
+// start, so it's all one way or the other; stop on that line, set it to false
+// in the watch window, and continue.
 
 // `unsafe` is an error, except where an item allows it by name.
 #![deny(unsafe_code)]
 
 use std::fmt;
+use std::sync::atomic::{AtomicBool, Ordering::Relaxed};
 
-const DEFER: bool = true;
+static DEFER: AtomicBool = AtomicBool::new(true);
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 struct Handle {
@@ -205,7 +209,8 @@ fn main() {
     println!("a world of 5 things, packed in rows; a life of 0 means its time is up");
     w.draw();
 
-    if DEFER {
+    let defer = DEFER.load(Relaxed);
+    if defer {
         println!("the expire system walks the rows, and records a despawn for each life of 0");
     } else {
         println!("the expire system walks the rows, and despawns each life of 0 on the spot");
@@ -214,7 +219,7 @@ fn main() {
     while row < w.owners.len() {
         let h = w.owners[row];
         if w.lives[row] == 0 {
-            if DEFER {
+            if defer {
                 cmds.record(Command::Despawn(Target::Entity(h)));
             } else {
                 println!("    row {row}: despawn {h}: {}", despawned(w.despawn(h), h));
@@ -224,7 +229,7 @@ fn main() {
     }
 
     println!("the spawner makes a replacement, and gives it a life through its pending number");
-    if DEFER {
+    if defer {
         let p = cmds.spawn(1);
         cmds.record(Command::SetLife(Target::Pending(p), 5));
     } else {
@@ -235,7 +240,7 @@ fn main() {
 
     let doomed = Handle { index: 2, generation: 1 };
     println!("a second system despawns {doomed} too: it doesn't know the first one did");
-    if DEFER {
+    if defer {
         cmds.record(Command::Despawn(Target::Entity(doomed)));
         println!("the buffer holds {} commands, and the world has not changed:", cmds.list.len());
         w.draw();

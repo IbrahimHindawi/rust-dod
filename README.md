@@ -11,7 +11,7 @@ Data-oriented design in Rust, in two courses and a dojo:
    loop fetches from memory, aliasing and what a `&mut` slice promises, what
    the compiler vectorizes and how to check it in the assembly, and which
    layout suits which access pattern.
-3. **The dojo.** The five building blocks an ECS is made of, taken out on
+3. **The dojo.** The thirteen building blocks an ECS is made of, taken out on
    their own: a playground to watch each one work and break, and a kata to
    write it yourself, timed, against a harness, until your hands know it.
 
@@ -72,6 +72,14 @@ The ECS is called kayan, after the C sketch it grew out of.
 | 3 | [the slot map](dojo/3.slot_map/README.md) | 1 and 2 together: handles into packed values |
 | 4 | [a type-erased column](dojo/4.column/README.md) | an array of any type as bytes, viewed as a typed slice |
 | 5 | [a command buffer](dojo/5.commands/README.md) | structural changes recorded now and applied later |
+| 6 | [bitsets](dojo/6.bitset/README.md) | a set of components in a u64: has, all of, none of |
+| 7 | [an arena](dojo/7.arena/README.md) | push, push, clear: memory for things that die together |
+| 8 | [index, not pointer](dojo/8.index/README.md) | links that stay right when their storage moves |
+| 9 | [interning](dojo/9.interning/README.md) | find or make, by key: a hash table that hands out dense ids |
+| 10 | [memoized edges](dojo/10.edges/README.md) | a slow lookup done once, then remembered on the edge |
+| 11 | [a reflection walk](dojo/11.reflect/README.md) | reading, writing and comparing any value through its type's record |
+| 12 | [a watermark](dojo/12.watermark/README.md) | looking only at what was added since last time |
+| 13 | [a dispatch table](dojo/13.dispatch/README.md) | behaviour as data: the schedule as a list of functions |
 
     python tools/dojo.py                      your reps, and which blocks are due
     python tools/dojo.py play slot_map        watch it: the playground

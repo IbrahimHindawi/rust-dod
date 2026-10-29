@@ -1,0 +1,31 @@
+a drone 8 from a turret, with health 100: it flies 2 closer a frame,
+and the turret hits it for 40 a frame once it's within 4
+    drone     8 from the turret, health 100, alive
+add move, shoot and die
+    schedule  move shoot die
+insert damage before die: die reads the health that damage writes
+    schedule  move shoot damage die
+frame 1
+    ran       move shoot damage die
+    drone     6 from the turret, health 100, alive
+frame 2
+    ran       move shoot damage die
+    drone     4 from the turret, health 60, alive
+switch shoot off: the turret is reloading
+    schedule  move (shoot off) damage die
+frame 3
+    ran       move damage die
+    drone     2 from the turret, health 60, alive
+switch shoot back on
+    schedule  move shoot damage die
+frame 4
+    ran       move shoot damage die
+    drone     0 from the turret, health 20, alive
+frame 5
+    ran       move shoot damage die
+    drone     0 from the turret, health -20, dead
+frame 6
+    ran       move shoot damage die
+    drone     0 from the turret, health -20, dead
+remove shoot: the turret is gone
+    schedule  move damage die

@@ -1,0 +1,42 @@
+components: P position, V velocity, H health, B burning
+movers: all {P V}, none {}; healthy: all {H}, none {B}
+make tables 0 to 2
+    table     0    1    2
+    has       P    PV   PVH
+    movers    |                   checked 0, scanned 0, tables none
+    healthy   |                   checked 0, scanned 0, tables none
+update movers: it looks at tables 0 to 2
+    table     0    1    2
+    has       P    PV   PVH
+    movers    -    yes  yes  |    checked 3, scanned 3, tables 1 2
+    healthy   |                   checked 0, scanned 0, tables none
+update movers again: no new tables, so it looks at nothing
+    table     0    1    2
+    has       P    PV   PVH
+    movers    -    yes  yes  |    checked 3, scanned 3, tables 1 2
+    healthy   |                   checked 0, scanned 0, tables none
+make tables 3 and 4
+    table     0    1    2    3    4
+    has       P    PV   PVH  PVHB H
+    movers    -    yes  yes  |              checked 3, scanned 3, tables 1 2
+    healthy   |                             checked 0, scanned 0, tables none
+update movers: it looks at tables 3 and 4 only
+    table     0    1    2    3    4
+    has       P    PV   PVH  PVHB H
+    movers    -    yes  yes  yes  -    |    checked 5, scanned 5, tables 1 2 3
+    healthy   |                             checked 0, scanned 0, tables none
+update healthy, for the first time: it looks at all five
+    table     0    1    2    3    4
+    has       P    PV   PVH  PVHB H
+    movers    -    yes  yes  yes  -    |    checked 5, scanned 5, tables 1 2 3
+    healthy   -    -    yes  -    yes  |    checked 5, scanned 5, tables 2 4
+make table 5
+    table     0    1    2    3    4    5
+    has       P    PV   PVH  PVHB H    VH
+    movers    -    yes  yes  yes  -    |         checked 5, scanned 5, tables 1 2 3
+    healthy   -    -    yes  -    yes  |         checked 5, scanned 5, tables 2 4
+update healthy: it looks at table 5 only
+    table     0    1    2    3    4    5
+    has       P    PV   PVH  PVHB H    VH
+    movers    -    yes  yes  yes  -    |         checked 5, scanned 5, tables 1 2 3
+    healthy   -    -    yes  -    yes  yes  |    checked 6, scanned 6, tables 2 4 5

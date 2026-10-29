@@ -19,12 +19,16 @@
 //
 // The switch: set DOUBLE to false, so a full column grows by one row, and run
 // it again. Look at the last line: the same 1000 pushes, and how many rows
-// were copied to make room for them.
+// were copied to make room for them. It's a static, read each time a column
+// grows, so a debugger can flip it mid-run too: stop on `grow`, set it to
+// false in the watch window, and continue.
 
 // `unsafe` is an error, except where an item allows it by name.
 #![deny(unsafe_code)]
 
-const DOUBLE: bool = true;
+use std::sync::atomic::{AtomicBool, Ordering::Relaxed};
+
+static DOUBLE: AtomicBool = AtomicBool::new(true);
 
 /// Plain old data: a type a column can hold as bytes and hand back.
 ///
@@ -85,7 +89,7 @@ impl Column {
     // when `blocks` is replaced. A Vec would often do this inside `resize`;
     // here it is spelled out, so the move is always a move.
     fn grow(&mut self) {
-        let capacity = match (DOUBLE, self.capacity) {
+        let capacity = match (DOUBLE.load(Relaxed), self.capacity) {
             (_, 0) => 4,
             (true, c) => c * 2,
             (false, c) => c + 1,
@@ -196,7 +200,7 @@ fn main() {
         let row = big.push_zeroed();
         big.slice_mut::<u32>().expect("a u32 column")[row] = i;
     }
-    let how = if DOUBLE { "doubling" } else { "one row at a time" };
+    let how = if DOUBLE.load(Relaxed) { "doubling" } else { "one row at a time" };
     println!("1000 pushes into a u32 column, growing by {how}");
     println!("    {} grows, {} rows copied to make room", big.grows, big.copied);
     let sum: u32 = big.slice::<u32>().expect("a u32 column").iter().sum();

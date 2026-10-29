@@ -14,14 +14,17 @@
 // `generations` and `free` change.
 //
 // The switch: set BUMP_ON_FREE to false and run it again. The reused index
-// comes back with the old generation, and a dead handle is alive again.
+// comes back with the old generation, and a dead handle is alive again. It's a
+// static, read each time it's used, so a debugger can flip it mid-run too:
+// stop on `free`, set it to false in the watch window, and continue.
 
 // `unsafe` is an error, except where an item allows it by name.
 #![deny(unsafe_code)]
 
 use std::fmt;
+use std::sync::atomic::{AtomicBool, Ordering::Relaxed};
 
-const BUMP_ON_FREE: bool = true;
+static BUMP_ON_FREE: AtomicBool = AtomicBool::new(true);
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 struct Handle {
@@ -58,7 +61,7 @@ impl Handles {
         if !self.alive(h) {
             return false;
         }
-        if BUMP_ON_FREE {
+        if BUMP_ON_FREE.load(Relaxed) {
             self.generations[h.index as usize] += 1;
         }
         self.free.push(h.index);

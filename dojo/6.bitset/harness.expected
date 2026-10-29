@@ -1,0 +1,24 @@
+dojo: 6. bitsets
+scenario
+    with 0, 1, 2, 3 and 4, from 0: the player: 31
+    bit(3): 8
+    has(player, sprite): true
+    has(player, turret): false
+    the turret: 45
+    contains_all(player, {position velocity}): true
+    contains_all(turret, {position velocity}): no velocity: false
+    intersects(turret, {velocity frozen}): false
+    intersects(turret, {position frozen}): true
+    matches(ghost, move): it is frozen: false
+    without(ghost, frozen): 11
+    matches(that, move): true
+    matches(player, think): it is the player: false
+    matches(turret, think): no velocity: false
+    matches(rock, all {}, none {}): no conditions: true
+    count(player): 5
+    ids(player): 0 1 2 3 4
+    with(0, 63): 9223372036854775808
+    ids of {0 31 32 63}: 0 31 32 63
+    count(every bit): 64
+fuzz: 20000 operations from seed 1, checked after each
+PASS

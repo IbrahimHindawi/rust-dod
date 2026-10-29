@@ -2,6 +2,8 @@
 
 `src/2.archetype_table/archetype_table.rs`
 
+**In the dojo:** [2. swap-remove and the back-reference](../dojo/2.swap_remove/README.md), [4. a type-erased column](../dojo/4.column/README.md), each on its own, to watch and to practise.
+
 Eight sparks in one table with three component columns, `positions`,
 `velocities` and `lives`, plus a `numbers` column that exists only so the
 output can say which spark is which. Each frame they move, they age, and the

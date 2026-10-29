@@ -1,0 +1,36 @@
+a 64-byte buffer, 16 bytes to a group: a letter per byte pushed, - for padding, . for free
+push a: a u8 flag, 1 byte, align 1
+    offset 0, used 1 of 64
+    a...............|................|................|................
+push b: a u32 count, 4 bytes, align 4
+    offset 4, used 8 of 64: 3 bytes of padding first
+    a---bbbb........|................|................|................
+push c: a u64 id, 8 bytes, align 8
+    offset 8, used 16 of 64
+    a---bbbbcccccccc|................|................|................
+push d: four f32s for SIMD, 16 bytes, align 16
+    offset 16, used 32 of 64
+    a---bbbbcccccccc|dddddddddddddddd|................|................
+mark: remember used, 32
+push e: a name, 3 bytes, align 1
+    offset 32, used 35 of 64
+    a---bbbbcccccccc|dddddddddddddddd|eee.............|................
+push f: a u64 time, 8 bytes, align 8
+    offset 40, used 48 of 64: 5 bytes of padding first
+    a---bbbbcccccccc|dddddddddddddddd|eee-----ffffffff|................
+rewind to the mark: e and f are gone at once
+    a---bbbbcccccccc|dddddddddddddddd|................|................
+push g: a path, 40 bytes, align 8
+    no room for 40 bytes after 32 of 64
+    a---bbbbcccccccc|dddddddddddddddd|................|................
+push h: a 2x4 matrix of f32s, 32 bytes, align 16
+    offset 32, used 64 of 64: the last byte
+    a---bbbbcccccccc|dddddddddddddddd|hhhhhhhhhhhhhhhh|hhhhhhhhhhhhhhhh
+push i: one more byte
+    no room for 1 byte after 64 of 64
+    a---bbbbcccccccc|dddddddddddddddd|hhhhhhhhhhhhhhhh|hhhhhhhhhhhhhhhh
+clear: the frame is over, and everything goes at once
+    ................|................|................|................
+push j: the next frame's first u64, over a's old bytes
+    offset 0, used 8 of 64
+    jjjjjjjj........|................|................|................

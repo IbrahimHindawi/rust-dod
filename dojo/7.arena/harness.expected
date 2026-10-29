@@ -1,0 +1,21 @@
+dojo: 7. an arena
+scenario
+    capacity: 64
+    push 1 byte, align 1: 0
+    push 4 bytes, align 4: 3 bytes of padding first: 4
+    push 8 bytes, align 8: 8
+    push 16 bytes, align 16: 16
+    used: 32
+    mark, then push 3 bytes, align 1: 32
+    push 8 bytes, align 8: 5 bytes of padding first: 40
+    used: 48
+    rewind to the mark: used: 32
+    push 40 bytes, align 8: past the end: None
+    used, after a push that didn't fit: 32
+    push 32 bytes, align 16: to the last byte: 32
+    push 1 byte: full: None
+    clear: used: 0
+    push 8 bytes, align 8: 0
+    write 1 to 8 with bytes_mut, read them with bytes: 1 2 3 4 5 6 7 8
+fuzz: 20000 operations from seed 1, checked after each
+PASS

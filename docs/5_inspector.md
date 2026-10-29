@@ -2,6 +2,8 @@
 
 `src/5.inspector/inspector.rs`
 
+**In the dojo:** [11. a reflection walk](../dojo/11.reflect/README.md), on its own, to watch and to practise.
+
 A soldier and a crate, printed field by field by code that names no component
 type, then edited by component and field name, then a table layout report.
 Everything comes from the reflect records the world already holds for sizes.

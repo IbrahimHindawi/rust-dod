@@ -1,0 +1,32 @@
+an interner with 8 slots; a slot holds an id + 1, or 0 when it's empty
+intern player, signature 31
+    slots looked at: 5; new: id 0, in slot 5
+    table    5:player, 1 of 8 slots used
+intern drone, signature 47
+    slots looked at: 4; new: id 1, in slot 4
+    table    4:drone 5:player, 2 of 8 slots used
+intern turret, signature 103
+    slots looked at: 1; new: id 2, in slot 1
+    table    1:turret 4:drone 5:player, 3 of 8 slots used
+intern drone again
+    slots looked at: 4; found: id 1
+intern rock, signature 7
+    slots looked at: 4 5 6; new: id 3, in slot 6
+    table    1:turret 4:drone 5:player 6:rock, 4 of 8 slots used
+intern chest, signature 135
+    slots looked at: 7; new: id 4, in slot 7
+    table    1:turret 4:drone 5:player 6:rock 7:chest, 5 of 8 slots used
+find tank, signature 111
+    slots looked at: 7 0; not there
+intern tank
+    slots looked at: 7 0; new: id 5, in slot 0
+    table    0:tank 1:turret 4:drone 5:player 6:rock 7:chest, 6 of 8 slots used
+intern bird, signature 15
+    slots looked at: 1 2; not there
+    7 ids would fill more than 3/4 of 8 slots: the table grows to 16, and every id
+    goes where its key's hash says now
+    slots looked at: 9 10; new: id 6, in slot 10
+    table    4:rock 5:player 7:chest 8:tank 9:turret 10:bird 12:drone, 7 of 16 slots used
+find turret
+    slots looked at: 9; found: id 2, and id 2's key is 103
+slots looked at, in all: 17

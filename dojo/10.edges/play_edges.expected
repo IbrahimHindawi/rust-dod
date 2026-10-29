@@ -1,0 +1,27 @@
+the drone starts at node 0 {}
+gains position: node 0 -> 1 {position}, by a lookup
+gains velocity: node 1 -> 2 {position velocity}, by a lookup
+gains health: node 2 -> 3 {position velocity health}, by a lookup
+catches fire: node 3 -> 4 {position velocity health burning}, by a lookup
+the fire goes out: node 4 -> 3 {position velocity health}, by an edge
+catches fire again: node 3 -> 4 {position velocity health burning}, by an edge
+the fire goes out: node 4 -> 3 {position velocity health}, by an edge
+the graph so far:
+    node 0 {}: +position 1
+    node 1 {position}: +velocity 2, -position 0
+    node 2 {position velocity}: +health 3, -velocity 1
+    node 3 {position velocity health}: +burning 4, -health 2
+    node 4 {position velocity health burning}: -burning 3
+stops: node 3 -> 5 {position health}, by a lookup
+catches fire: node 5 -> 6 {position health burning}, by a lookup
+moves again: node 6 -> 4 {position velocity health burning}, by a lookup
+the fire goes out: node 4 -> 3 {position velocity health}, by an edge
+the graph:
+    node 0 {}: +position 1
+    node 1 {position}: +velocity 2, -position 0
+    node 2 {position velocity}: +health 3, -velocity 1
+    node 3 {position velocity health}: +burning 4, -velocity 5, -health 2
+    node 4 {position velocity health burning}: -velocity 6, -burning 3
+    node 5 {position health}: +velocity 3, +burning 6
+    node 6 {position health burning}: +velocity 4, -burning 5
+moves that looked up a node by signature: 7; that followed an edge: 4

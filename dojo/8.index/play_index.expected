@@ -1,0 +1,37 @@
+a list with room for 2 nodes, in cells 0..2 of memory
+push_back 10 as a
+    a is node 0
+    nodes    0: 10, prev -, next -
+    list     10
+push_back 20 as b
+    b is node 1
+    nodes    0: 10, prev -, next 1 | 1: 20, prev 0, next -
+    list     10 20
+keep b's index, 1, and where it is, cell 1, which is what a pointer holds: the same, until the list moves
+push_back 30 as c: the list is full
+    the list moves from cells 0..2 to cells 2..6
+    c is node 2
+    nodes    0: 10, prev -, next 1 | 1: 20, prev 0, next 2 | 2: 30, prev 1, next -
+    list     10 20 30
+write 21 into b through its index, 1: cell 3 now
+    nodes    0: 10, prev -, next 1 | 1: 21, prev 0, next 2 | 2: 30, prev 1, next -
+    list     10 21 30
+    memory   0..2 old copy: 10 20 | 2..6 the list: 10 21 30 .
+push_front 5 as d
+    d is node 3
+    nodes    0: 10, prev 3, next 1 | 1: 21, prev 0, next 2 | 2: 30, prev 1, next - | 3: 5, prev -, next 0
+    list     5 10 21 30
+remove a: node 0 goes on the free list
+    nodes    0: free | 1: 21, prev 3, next 2 | 2: 30, prev 1, next - | 3: 5, prev -, next 1
+    list     5 21 30
+insert 25 after b as e
+    e is node 0: a's node, from the free list
+    nodes    0: 25, prev 1, next 2 | 1: 21, prev 3, next 0 | 2: 30, prev 0, next - | 3: 5, prev -, next 1
+    list     5 21 25 30
+push_back 40 as f: the list is full again
+    the list moves from cells 2..6 to cells 6..14
+    f is node 4
+    nodes    0: 25, prev 1, next 2 | 1: 21, prev 3, next 0 | 2: 30, prev 0, next 4 | 3: 5, prev -, next 1 | 4: 40, prev 2, next -
+    list     5 21 25 30 40
+    memory   0..2 old copy: 10 20 | 2..6 old copy: 25 21 30 5 | 6..14 the list: 25 21 30 5 40 . . .
+read b through its index, 1: 21

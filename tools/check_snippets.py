@@ -93,7 +93,8 @@ def guides() -> list[tuple[Path, list[str], list[str], str, str]]:
             expected = expected_path.read_text(encoding="utf-8").split("\n") if expected_path.exists() else []
             found.append((doc, with_modules(source_path), expected, m.group(1),
                           expected_path.relative_to(ROOT).as_posix()))
-    for block in sorted(p for p in (ROOT / "dojo").glob("*.*") if (p / "README.md").exists()):
+    for block in sorted((p for p in (ROOT / "dojo").glob("[0-9]*.*") if (p / "README.md").exists()),
+                       key=lambda p: int(p.name.split(".")[0])):
         texts, expected, _ = dojo_sources(block)
         name = block.relative_to(ROOT).as_posix()
         found.append((block / "README.md", texts, expected, name, name + "'s expected output"))

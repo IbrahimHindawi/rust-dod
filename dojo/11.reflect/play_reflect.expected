@@ -1,0 +1,23 @@
+a lamp's record: 20 bytes
+    on: offset 0, size 1, u8
+    power: offset 4, size 4, f32
+    at: offset 8, size 8, a struct
+    flicker: offset 16, size 4, f32, hidden
+the lamp, walked by its record:
+    on: 1
+    power: 60.00
+    at.x: 3.00
+    at.y: 4.00
+set power to 75.00: true
+set at.x to 5.00: true
+diff with the lamp before: power at.x
+set flicker to 0.50: true
+diff with the lamp before: power at.x
+set on to 0.00: false
+set at to 1.00: false
+set at.z to 1.00: false
+the lamp, walked by its record:
+    on: 1
+    power: 75.00
+    at.x: 5.00
+    at.y: 4.00

@@ -129,3 +129,35 @@ path = "dojo/4.column/play_column.rs"
 [[bin]]
 name = "play_commands"
 path = "dojo/5.commands/play_commands.rs"
+
+[[bin]]
+name = "play_bitset"
+path = "dojo/6.bitset/play_bitset.rs"
+
+[[bin]]
+name = "play_arena"
+path = "dojo/7.arena/play_arena.rs"
+
+[[bin]]
+name = "play_index"
+path = "dojo/8.index/play_index.rs"
+
+[[bin]]
+name = "play_interning"
+path = "dojo/9.interning/play_interning.rs"
+
+[[bin]]
+name = "play_edges"
+path = "dojo/10.edges/play_edges.rs"
+
+[[bin]]
+name = "play_reflect"
+path = "dojo/11.reflect/play_reflect.rs"
+
+[[bin]]
+name = "play_watermark"
+path = "dojo/12.watermark/play_watermark.rs"
+
+[[bin]]
+name = "play_dispatch"
+path = "dojo/13.dispatch/play_dispatch.rs"

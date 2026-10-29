@@ -109,7 +109,8 @@ CLIPPY_DOJO = ["-A", "clippy::new_without_default", "-A", "clippy::len_without_i
 
 
 def dojo_blocks() -> list[Path]:
-    return sorted(p for p in DOJO.iterdir() if p.is_dir() and re.match(r"\d+\.", p.name))
+    return sorted((p for p in DOJO.iterdir() if p.is_dir() and re.match(r"\d+\.", p.name)),
+                  key=lambda p: int(p.name.split(".")[0]))
 
 
 # A kata file is a whole program: it brings in dojo.rs and the harness as

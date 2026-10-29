@@ -1,0 +1,20 @@
+dojo: 9. interning
+scenario
+    intern player, drone, turret: 0 1 2
+    intern drone again: 1
+    intern rock, chest: 3 4
+    find tank: None
+    intern tank: 5
+    intern bird: the table grows: 6
+    find turret: 2
+    key(2): 103
+    len: 7
+    intern 0: 7
+    find 0: 7
+    intern 1 << 63, 1 << 62: only high bits: 8 9
+    find 1 << 61: None
+    key(8): 9223372036854775808
+    intern 10 more: the table grows again; the first: 10
+    find each key so far: true
+fuzz: 20000 operations from seed 1, checked after each
+PASS
